@@ -1,0 +1,57 @@
+# Development Dockerfile for Django backend
+FROM python:3.11-slim-bookworm
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV DJANGO_SETTINGS_MODULE=core.settings.development
+
+# Set work directory
+WORKDIR /app
+
+# Install system dependencies including GDAL
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libpq-dev \
+    gdal-bin \
+    libgdal-dev \
+    libgeos-dev \
+    libproj-dev \
+    python3-gdal \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set GDAL environment variables
+ENV CPLUS_INCLUDE_PATH=/usr/include/gdal
+ENV C_INCLUDE_PATH=/usr/include/gdal
+ENV GDAL_LIBRARY_PATH=/usr/lib/libgdal.so
+ENV GEOS_LIBRARY_PATH=/usr/lib/libgeos_c.so
+
+# Install pip and pipenv
+RUN pip install --upgrade pip pipenv
+
+# Copy Pipfile
+COPY Pipfile Pipfile.lock ./
+
+# Install Python dependencies
+RUN pipenv install --dev --system --deploy
+
+# Copy project
+COPY . .
+
+# Create necessary directories
+RUN mkdir -p /app/media /app/staticfiles /app/logs
+
+# Create non-root user
+RUN adduser --disabled-password --gecos '' appuser && \
+    chown -R appuser:appuser /app
+USER appuser
+
+# Expose port
+EXPOSE 8000
+
+# Run development server
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
