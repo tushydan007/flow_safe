@@ -3,7 +3,6 @@ import type {
   PipelineRoute,
   PipelineRouteListItem,
   GeoJSONData,
-  ApiResponse,
 } from "@/types";
 
 interface PipelineListResponse {

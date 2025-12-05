@@ -1,10 +1,10 @@
-import { useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Volume2, VolumeX, AlertTriangle, X } from 'lucide-react';
+import { useEffect, useRef, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Volume2, VolumeX, AlertTriangle, X } from "lucide-react";
 
-import { useAppSelector, useAppDispatch } from '@/store/hooks';
-import { dismissCriticalAlert, toggleSound } from '@/store/slices/alertSlice';
-import { Button } from '@/components/ui/button';
+import { useAppSelector, useAppDispatch } from "@/store/hooks";
+import { dismissCriticalAlert, toggleSound } from "@/store/slices/alertSlice";
+import { Button } from "@/components/ui/button";
 
 export function AlertSound() {
   const dispatch = useAppDispatch();
@@ -26,7 +26,7 @@ export function AlertSound() {
   useEffect(() => {
     // Create audio element
     audioRef.current = new Audio(
-      'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAB/f39/'
+      "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAB/f39/"
     );
     audioRef.current.volume = 0.5;
 
@@ -76,7 +76,7 @@ export function AlertSound() {
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -100, opacity: 0 }}
-          className="fixed top-0 left-0 right-0 z-[100] bg-destructive text-destructive-foreground"
+          className="fixed top-0 left-0 right-0 z-100 bg-destructive text-destructive-foreground"
         >
           <div className="container mx-auto px-4 py-3">
             <div className="flex items-center justify-between gap-4">
@@ -90,7 +90,8 @@ export function AlertSound() {
                 <div>
                   <p className="font-semibold">Critical Alert Detected</p>
                   <p className="text-sm opacity-90">
-                    {criticalAlerts.length} critical issue(s) require immediate attention
+                    {criticalAlerts.length} critical issue(s) require immediate
+                    attention
                   </p>
                 </div>
               </div>
@@ -124,4 +125,3 @@ export function AlertSound() {
     </AnimatePresence>
   );
 }
-

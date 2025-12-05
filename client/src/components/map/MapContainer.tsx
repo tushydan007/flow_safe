@@ -5,7 +5,7 @@ import {
   GeoJSON,
   useMap,
 } from "react-leaflet";
-import { LatLngBoundsExpression } from "leaflet";
+import { type LatLngBoundsExpression } from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 import type { GeoJSONData } from "@/types/pipeline";

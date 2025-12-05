@@ -1,10 +1,10 @@
-import { Outlet } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Outlet } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
-import { useAppSelector } from '@/store/hooks';
-import { Navbar } from '@/components/dashboard/Navbar';
-import { Sidebar } from '@/components/dashboard/Sidebar';
-import { AlertSound } from '@/components/dashboard/AlertSound';
+import { useAppSelector } from "@/store/hooks";
+import { Navbar } from "@/components/dashboard/Navbar";
+import { Sidebar } from "@/components/dashboard/Sidebar";
+import { AlertSound } from "@/components/dashboard/AlertSound";
 
 export function DashboardLayout() {
   const { sidebarCollapsed } = useAppSelector((state) => state.ui);
@@ -36,7 +36,7 @@ export function DashboardLayout() {
         {/* Main Content */}
         <main
           className={`flex-1 transition-all duration-200 ${
-            sidebarCollapsed ? 'lg:ml-0' : 'lg:ml-0'
+            sidebarCollapsed ? "lg:ml-0" : "lg:ml-0"
           }`}
         >
           <div className="h-[calc(100vh-4rem)] overflow-auto">
@@ -47,4 +47,3 @@ export function DashboardLayout() {
     </div>
   );
 }
-

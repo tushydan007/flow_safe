@@ -1,4 +1,4 @@
-import { FallbackProps } from "react-error-boundary";
+import { type FallbackProps } from "react-error-boundary";
 import { motion } from "framer-motion";
 import { AlertTriangle, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";

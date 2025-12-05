@@ -1,4 +1,4 @@
-import { useEffect, ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { updateSystemTheme } from "@/store/slices/themeSlice";
 

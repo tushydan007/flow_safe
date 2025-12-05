@@ -1,6 +1,6 @@
-import { Outlet } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { MapPin } from 'lucide-react';
+import { Outlet } from "react-router-dom";
+import { motion } from "framer-motion";
+import { MapPin } from "lucide-react";
 
 export function AuthLayout() {
   return (
@@ -10,14 +10,28 @@ export function AuthLayout() {
         initial={{ opacity: 0, x: -50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6 }}
-        className="hidden lg:flex flex-col justify-between p-12 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white relative overflow-hidden"
+        className="hidden lg:flex flex-col justify-between p-12 bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 text-white relative overflow-hidden"
       >
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
-          <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <svg
+            className="w-full h-full"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+          >
             <defs>
-              <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-                <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" strokeWidth="0.5" />
+              <pattern
+                id="grid"
+                width="10"
+                height="10"
+                patternUnits="userSpaceOnUse"
+              >
+                <path
+                  d="M 10 0 L 0 0 0 10"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="0.5"
+                />
               </pattern>
             </defs>
             <rect width="100" height="100" fill="url(#grid)" />
@@ -59,16 +73,17 @@ export function AuthLayout() {
           </h1>
           <p className="text-lg text-slate-300 max-w-md">
             Real-time satellite imagery analysis for pipeline infrastructure.
-            Detect leaks, monitor facilities, and track changes with AI-powered insights.
+            Detect leaks, monitor facilities, and track changes with AI-powered
+            insights.
           </p>
-          
+
           {/* Features */}
           <div className="grid grid-cols-2 gap-4 pt-4">
             {[
-              'Leak Detection',
-              'Change Monitoring',
-              'Object Detection',
-              'Emission Tracking',
+              "Leak Detection",
+              "Change Monitoring",
+              "Object Detection",
+              "Emission Tracking",
             ].map((feature, index) => (
               <motion.div
                 key={feature}
@@ -104,4 +119,3 @@ export function AuthLayout() {
     </div>
   );
 }
-
