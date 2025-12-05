@@ -1,8 +1,13 @@
-import type { Coordinates, GeoJSONData } from './pipeline';
+import type { Coordinates, GeoJSONData } from "./pipeline";
 
-export type AnalysisType = 'ndvi' | 'change' | 'encroachment' | 'emission' | 'facility';
-export type AnalysisStatus = 'pending' | 'processing' | 'completed' | 'failed';
-export type Severity = 'low' | 'medium' | 'high' | 'critical';
+export type AnalysisType =
+  | "ndvi"
+  | "change"
+  | "encroachment"
+  | "emission"
+  | "facility";
+export type AnalysisStatus = "pending" | "processing" | "completed" | "failed";
+export type Severity = "low" | "medium" | "high" | "critical";
 
 export interface AnalysisResult {
   id: number;
@@ -157,4 +162,3 @@ export interface AnalysisResultListItem {
   completed_at: string | null;
   created_at: string;
 }
-

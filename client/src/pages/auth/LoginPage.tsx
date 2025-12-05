@@ -1,20 +1,20 @@
-import { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { motion } from 'framer-motion';
-import { Eye, EyeOff, LogIn, Loader2, MapPin } from 'lucide-react';
+import { useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { motion } from "framer-motion";
+import { Eye, EyeOff, LogIn, Loader2, MapPin } from "lucide-react";
 
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { login, clearError } from '@/store/slices/authSlice';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { login, clearError } from "@/store/slices/authSlice";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const loginSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
-  password: z.string().min(1, 'Password is required'),
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string().min(1, "Password is required"),
 });
 
 type LoginFormData = z.infer<typeof loginSchema>;
@@ -26,7 +26,9 @@ export function LoginPage() {
   const { isLoading, error } = useAppSelector((state) => state.auth);
   const [showPassword, setShowPassword] = useState(false);
 
-  const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/dashboard';
+  const from =
+    (location.state as { from?: { pathname: string } })?.from?.pathname ||
+    "/dashboard";
 
   const {
     register,
@@ -35,8 +37,8 @@ export function LoginPage() {
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
   });
 
@@ -91,8 +93,8 @@ export function LoginPage() {
             type="email"
             placeholder="name@example.com"
             autoComplete="email"
-            {...register('email')}
-            className={errors.email ? 'border-destructive' : ''}
+            {...register("email")}
+            className={errors.email ? "border-destructive" : ""}
           />
           {errors.email && (
             <p className="text-sm text-destructive">{errors.email.message}</p>
@@ -104,22 +106,28 @@ export function LoginPage() {
           <div className="relative">
             <Input
               id="password"
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               placeholder="Enter your password"
               autoComplete="current-password"
-              {...register('password')}
-              className={errors.password ? 'border-destructive pr-10' : 'pr-10'}
+              {...register("password")}
+              className={errors.password ? "border-destructive pr-10" : "pr-10"}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
             >
-              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              {showPassword ? (
+                <EyeOff className="w-4 h-4" />
+              ) : (
+                <Eye className="w-4 h-4" />
+              )}
             </button>
           </div>
           {errors.password && (
-            <p className="text-sm text-destructive">{errors.password.message}</p>
+            <p className="text-sm text-destructive">
+              {errors.password.message}
+            </p>
           )}
         </div>
 
@@ -140,7 +148,7 @@ export function LoginPage() {
 
       {/* Footer */}
       <p className="text-center text-sm text-muted-foreground">
-        Don&apos;t have an account?{' '}
+        Don&apos;t have an account?{" "}
         <Link
           to="/register"
           className="font-medium text-primary hover:underline underline-offset-4"
@@ -151,4 +159,3 @@ export function LoginPage() {
     </motion.div>
   );
 }
-

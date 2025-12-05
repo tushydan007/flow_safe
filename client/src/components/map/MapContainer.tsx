@@ -1,12 +1,17 @@
-import { useEffect, useRef } from 'react';
-import { MapContainer as LeafletMap, TileLayer, GeoJSON, useMap } from 'react-leaflet';
-import { LatLngBoundsExpression } from 'leaflet';
-import 'leaflet/dist/leaflet.css';
+import { useEffect, useRef } from "react";
+import {
+  MapContainer as LeafletMap,
+  TileLayer,
+  GeoJSON,
+  useMap,
+} from "react-leaflet";
+import { LatLngBoundsExpression } from "leaflet";
+import "leaflet/dist/leaflet.css";
 
-import type { GeoJSONData } from '@/types/pipeline';
-import type { SatelliteImage } from '@/types/satellite';
-import type { AnalysisResult } from '@/types/analysis';
-import { AnalysisMarkers } from './AnalysisMarkers';
+import type { GeoJSONData } from "@/types/pipeline";
+import type { SatelliteImage } from "@/types/satellite";
+import type { AnalysisResult } from "@/types/analysis";
+import { AnalysisMarkers } from "./AnalysisMarkers";
 
 interface MapContainerProps {
   center: [number, number];
@@ -45,12 +50,12 @@ function MapController({
       onCenterChange([mapCenter.lat, mapCenter.lng]);
     };
 
-    map.on('zoomend', handleZoomEnd);
-    map.on('moveend', handleMoveEnd);
+    map.on("zoomend", handleZoomEnd);
+    map.on("moveend", handleMoveEnd);
 
     return () => {
-      map.off('zoomend', handleZoomEnd);
-      map.off('moveend', handleMoveEnd);
+      map.off("zoomend", handleZoomEnd);
+      map.off("moveend", handleMoveEnd);
     };
   }, [map, onZoomChange, onCenterChange]);
 
@@ -91,7 +96,7 @@ export function MapContainer({
   const mapRef = useRef(null);
 
   const pipelineStyle = (feature: GeoJSON.Feature | undefined) => {
-    const color = feature?.properties?.color || '#FF5722';
+    const color = feature?.properties?.color || "#FF5722";
     return {
       color,
       weight: 3,
@@ -105,7 +110,7 @@ export function MapContainer({
       const { pipeline_name, pipeline_id } = feature.properties;
       layer.bindPopup(`
         <div class="p-2">
-          <h3 class="font-semibold">${pipeline_name || 'Pipeline'}</h3>
+          <h3 class="font-semibold">${pipeline_name || "Pipeline"}</h3>
           <p class="text-sm text-gray-500">ID: ${pipeline_id}</p>
         </div>
       `);
@@ -149,4 +154,3 @@ export function MapContainer({
     </LeafletMap>
   );
 }
-

@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   backend:
@@ -111,4 +111,3 @@ volumes:
   media_prod:
   static_prod:
   logs_prod:
-

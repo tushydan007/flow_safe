@@ -18,7 +18,7 @@ export interface OrganizationBasic {
 }
 
 export interface UserSettingsBasic {
-  theme: 'light' | 'dark' | 'system';
+  theme: "light" | "dark" | "system";
   notifications_enabled: boolean;
   sound_alerts_enabled: boolean;
 }
@@ -57,4 +57,3 @@ export interface ApiResponse<T> {
     details: Record<string, string[]>;
   };
 }
-

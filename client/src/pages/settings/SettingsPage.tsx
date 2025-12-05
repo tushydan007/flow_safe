@@ -1,30 +1,39 @@
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { motion } from 'framer-motion';
-import { Settings, Moon, Sun, Monitor, Bell, Volume2, Mail, Loader2 } from 'lucide-react';
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { motion } from "framer-motion";
+import {
+  Settings,
+  Moon,
+  Sun,
+  Monitor,
+  Bell,
+  Volume2,
+  Mail,
+  Loader2,
+} from "lucide-react";
 
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { fetchSettings, updateSettings } from '@/store/slices/userSlice';
-import { setTheme } from '@/store/slices/themeSlice';
-import { setSoundEnabled } from '@/store/slices/alertSlice';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Switch } from '@/components/ui/switch';
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { fetchSettings, updateSettings } from "@/store/slices/userSlice";
+import { setTheme } from "@/store/slices/themeSlice";
+import { setSoundEnabled } from "@/store/slices/alertSlice";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { useToast } from '@/hooks/use-toast';
-import { ProfileSkeleton } from '@/components/common/LoadingSkeleton';
+} from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
+import { ProfileSkeleton } from "@/components/common/LoadingSkeleton";
 
 const settingsSchema = z.object({
-  theme: z.enum(['light', 'dark', 'system']),
+  theme: z.enum(["light", "dark", "system"]),
   notifications_enabled: z.boolean(),
   sound_alerts_enabled: z.boolean(),
   email_notifications: z.boolean(),
@@ -63,7 +72,7 @@ export function SettingsPage() {
   } = useForm<SettingsFormData>({
     resolver: zodResolver(settingsSchema),
     defaultValues: {
-      theme: 'system',
+      theme: "system",
       notifications_enabled: true,
       sound_alerts_enabled: true,
       email_notifications: true,
@@ -79,13 +88,13 @@ export function SettingsPage() {
 
   useEffect(() => {
     if (settings) {
-      setValue('theme', settings.theme);
-      setValue('notifications_enabled', settings.notifications_enabled);
-      setValue('sound_alerts_enabled', settings.sound_alerts_enabled);
-      setValue('email_notifications', settings.email_notifications);
-      setValue('map_default_zoom', settings.map_default_zoom);
-      setValue('map_default_lat', settings.map_default_lat);
-      setValue('map_default_lng', settings.map_default_lng);
+      setValue("theme", settings.theme);
+      setValue("notifications_enabled", settings.notifications_enabled);
+      setValue("sound_alerts_enabled", settings.sound_alerts_enabled);
+      setValue("email_notifications", settings.email_notifications);
+      setValue("map_default_zoom", settings.map_default_zoom);
+      setValue("map_default_lat", settings.map_default_lat);
+      setValue("map_default_lng", settings.map_default_lng);
     }
   }, [settings, setValue]);
 
@@ -95,22 +104,22 @@ export function SettingsPage() {
       dispatch(setTheme(data.theme));
       dispatch(setSoundEnabled(data.sound_alerts_enabled));
       toast({
-        title: 'Settings saved',
-        description: 'Your preferences have been updated successfully.',
-        variant: 'success',
+        title: "Settings saved",
+        description: "Your preferences have been updated successfully.",
+        variant: "success",
       });
     } else {
       toast({
-        title: 'Error',
-        description: 'Failed to save settings. Please try again.',
-        variant: 'destructive',
+        title: "Error",
+        description: "Failed to save settings. Please try again.",
+        variant: "destructive",
       });
     }
   };
 
   const handleThemeChange = (value: string) => {
-    setValue('theme', value as 'light' | 'dark' | 'system');
-    dispatch(setTheme(value as 'light' | 'dark' | 'system'));
+    setValue("theme", value as "light" | "dark" | "system");
+    dispatch(setTheme(value as "light" | "dark" | "system"));
   };
 
   if (isLoading && !settings) {
@@ -131,7 +140,9 @@ export function SettingsPage() {
       {/* Header */}
       <motion.div variants={itemVariants} className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
-        <p className="text-muted-foreground">Manage your application preferences</p>
+        <p className="text-muted-foreground">
+          Manage your application preferences
+        </p>
       </motion.div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
@@ -149,7 +160,7 @@ export function SettingsPage() {
                   Select your preferred color scheme
                 </p>
               </div>
-              <Select value={watch('theme')} onValueChange={handleThemeChange}>
+              <Select value={watch("theme")} onValueChange={handleThemeChange}>
                 <SelectTrigger className="w-[150px]">
                   <SelectValue />
                 </SelectTrigger>
@@ -193,8 +204,10 @@ export function SettingsPage() {
                 </p>
               </div>
               <Switch
-                checked={watch('notifications_enabled')}
-                onCheckedChange={(checked) => setValue('notifications_enabled', checked)}
+                checked={watch("notifications_enabled")}
+                onCheckedChange={(checked) =>
+                  setValue("notifications_enabled", checked)
+                }
               />
             </div>
             <div className="flex items-center justify-between">
@@ -208,8 +221,10 @@ export function SettingsPage() {
                 </p>
               </div>
               <Switch
-                checked={watch('sound_alerts_enabled')}
-                onCheckedChange={(checked) => setValue('sound_alerts_enabled', checked)}
+                checked={watch("sound_alerts_enabled")}
+                onCheckedChange={(checked) =>
+                  setValue("sound_alerts_enabled", checked)
+                }
               />
             </div>
             <div className="flex items-center justify-between">
@@ -223,8 +238,10 @@ export function SettingsPage() {
                 </p>
               </div>
               <Switch
-                checked={watch('email_notifications')}
-                onCheckedChange={(checked) => setValue('email_notifications', checked)}
+                checked={watch("email_notifications")}
+                onCheckedChange={(checked) =>
+                  setValue("email_notifications", checked)
+                }
               />
             </div>
           </div>
@@ -242,7 +259,7 @@ export function SettingsPage() {
                   type="number"
                   min={1}
                   max={18}
-                  {...register('map_default_zoom', { valueAsNumber: true })}
+                  {...register("map_default_zoom", { valueAsNumber: true })}
                 />
               </div>
               <div className="space-y-2">
@@ -251,7 +268,7 @@ export function SettingsPage() {
                   id="map_default_lat"
                   type="number"
                   step="0.000001"
-                  {...register('map_default_lat', { valueAsNumber: true })}
+                  {...register("map_default_lat", { valueAsNumber: true })}
                 />
               </div>
               <div className="space-y-2">
@@ -260,7 +277,7 @@ export function SettingsPage() {
                   id="map_default_lng"
                   type="number"
                   step="0.000001"
-                  {...register('map_default_lng', { valueAsNumber: true })}
+                  {...register("map_default_lng", { valueAsNumber: true })}
                 />
               </div>
             </div>
@@ -276,7 +293,7 @@ export function SettingsPage() {
                 Saving...
               </>
             ) : (
-              'Save Changes'
+              "Save Changes"
             )}
           </Button>
         </motion.div>
@@ -284,4 +301,3 @@ export function SettingsPage() {
     </motion.div>
   );
 }
-

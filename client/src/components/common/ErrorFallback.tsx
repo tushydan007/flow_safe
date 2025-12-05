@@ -1,7 +1,7 @@
-import { FallbackProps } from 'react-error-boundary';
-import { motion } from 'framer-motion';
-import { AlertTriangle, RefreshCw } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { FallbackProps } from "react-error-boundary";
+import { motion } from "framer-motion";
+import { AlertTriangle, RefreshCw } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
   return (
@@ -21,7 +21,9 @@ export function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
         </motion.div>
 
         <div className="space-y-2">
-          <h1 className="text-2xl font-bold text-foreground">Something went wrong</h1>
+          <h1 className="text-2xl font-bold text-foreground">
+            Something went wrong
+          </h1>
           <p className="text-muted-foreground">
             An unexpected error occurred. Please try refreshing the page.
           </p>
@@ -41,4 +43,3 @@ export function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
     </motion.div>
   );
 }
-

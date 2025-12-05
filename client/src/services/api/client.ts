@@ -1,15 +1,19 @@
-import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios';
-import { store } from '@/store';
-import { setTokens, logout } from '@/store/slices/authSlice';
-import type { AuthTokens } from '@/types/auth';
+import axios, {
+  AxiosError,
+  type AxiosInstance,
+  type InternalAxiosRequestConfig,
+} from "axios";
+import { store } from "@/store";
+import { setTokens, logout } from "@/store/slices/authSlice";
+import type { AuthTokens } from "@/types/auth";
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api/v1";
 
 // Create axios instance
 const apiClient: AxiosInstance = axios.create({
   baseURL: API_URL,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
   timeout: 30000,
 });
@@ -19,11 +23,11 @@ apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const state = store.getState();
     const token = state.auth.tokens?.access;
-    
+
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    
+
     return config;
   },
   (error) => Promise.reject(error)
@@ -50,8 +54,10 @@ const processQueue = (error: Error | null, token: string | null = null) => {
 apiClient.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
-    const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
-    
+    const originalRequest = error.config as InternalAxiosRequestConfig & {
+      _retry?: boolean;
+    };
+
     // If 401 and not already retrying
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
@@ -80,9 +86,12 @@ apiClient.interceptors.response.use(
       }
 
       try {
-        const response = await axios.post<AuthTokens>(`${API_URL}/auth/jwt/refresh/`, {
-          refresh: refreshToken,
-        });
+        const response = await axios.post<AuthTokens>(
+          `${API_URL}/auth/jwt/refresh/`,
+          {
+            refresh: refreshToken,
+          }
+        );
 
         const newTokens: AuthTokens = {
           access: response.data.access,
@@ -117,27 +126,28 @@ export const withRetry = async <T>(
   delay = 1000
 ): Promise<T> => {
   let lastError: Error | undefined;
-  
+
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     try {
       return await fn();
     } catch (error) {
       lastError = error as Error;
-      
+
       // Don't retry on authentication errors
       if (axios.isAxiosError(error) && error.response?.status === 401) {
         throw error;
       }
-      
+
       // Wait before retrying
       if (attempt < maxRetries - 1) {
-        await new Promise((resolve) => setTimeout(resolve, delay * (attempt + 1)));
+        await new Promise((resolve) =>
+          setTimeout(resolve, delay * (attempt + 1))
+        );
       }
     }
   }
-  
+
   throw lastError;
 };
 
 export default apiClient;
-

@@ -1,23 +1,43 @@
-import { motion } from 'framer-motion';
-import type { AnalysisResult } from '@/types/analysis';
+import { motion } from "framer-motion";
+import type { AnalysisResult } from "@/types/analysis";
 
 interface MapLegendProps {
   analysisResults: AnalysisResult[];
 }
 
 const severityColors = {
-  critical: { color: '#ef4444', label: 'Critical' },
-  high: { color: '#f97316', label: 'High' },
-  medium: { color: '#eab308', label: 'Medium' },
-  low: { color: '#22c55e', label: 'Low' },
+  critical: { color: "#ef4444", label: "Critical" },
+  high: { color: "#f97316", label: "High" },
+  medium: { color: "#eab308", label: "Medium" },
+  low: { color: "#22c55e", label: "Low" },
 };
 
 const analysisTypes = {
-  ndvi: { icon: '🛢️', label: 'Leak Detection', description: 'NDVI-based oil spill detection' },
-  change: { icon: '📊', label: 'Change Detection', description: 'Land use changes' },
-  encroachment: { icon: '🚧', label: 'Encroachment', description: 'Objects near pipeline' },
-  emission: { icon: '💨', label: 'Emissions', description: 'Gas leaks and thermal anomalies' },
-  facility: { icon: '🏭', label: 'Facility', description: 'Infrastructure monitoring' },
+  ndvi: {
+    icon: "🛢️",
+    label: "Leak Detection",
+    description: "NDVI-based oil spill detection",
+  },
+  change: {
+    icon: "📊",
+    label: "Change Detection",
+    description: "Land use changes",
+  },
+  encroachment: {
+    icon: "🚧",
+    label: "Encroachment",
+    description: "Objects near pipeline",
+  },
+  emission: {
+    icon: "💨",
+    label: "Emissions",
+    description: "Gas leaks and thermal anomalies",
+  },
+  facility: {
+    icon: "🏭",
+    label: "Facility",
+    description: "Infrastructure monitoring",
+  },
 };
 
 export function MapLegend({ analysisResults }: MapLegendProps) {
@@ -55,20 +75,22 @@ export function MapLegend({ analysisResults }: MapLegendProps) {
           Analysis Types
         </h4>
         <div className="space-y-2">
-          {Object.entries(analysisTypes).map(([key, { icon, label, description }]) => (
-            <div
-              key={key}
-              className={`flex items-start gap-2 ${
-                activeTypes.has(key) ? 'opacity-100' : 'opacity-50'
-              }`}
-            >
-              <span className="text-base">{icon}</span>
-              <div>
-                <p className="text-xs font-medium">{label}</p>
-                <p className="text-xs text-muted-foreground">{description}</p>
+          {Object.entries(analysisTypes).map(
+            ([key, { icon, label, description }]) => (
+              <div
+                key={key}
+                className={`flex items-start gap-2 ${
+                  activeTypes.has(key) ? "opacity-100" : "opacity-50"
+                }`}
+              >
+                <span className="text-base">{icon}</span>
+                <div>
+                  <p className="text-xs font-medium">{label}</p>
+                  <p className="text-xs text-muted-foreground">{description}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          )}
         </div>
       </div>
 
@@ -82,4 +104,3 @@ export function MapLegend({ analysisResults }: MapLegendProps) {
     </motion.div>
   );
 }
-

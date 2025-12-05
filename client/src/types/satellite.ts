@@ -1,4 +1,4 @@
-import type { Bounds, Coordinates } from './pipeline';
+import type { Bounds, Coordinates } from "./pipeline";
 
 export interface SatelliteImage {
   id: number;
@@ -17,7 +17,7 @@ export interface SatelliteImage {
   bands: number | null;
   file_size: number | null;
   crs: string;
-  status: 'uploading' | 'processing' | 'ready' | 'error';
+  status: "uploading" | "processing" | "ready" | "error";
   error_message: string;
   is_analyzed: boolean;
   analysis_completed_at: string | null;
@@ -47,4 +47,3 @@ export interface SatelliteImageDropdown {
   acquisition_date: string | null;
   is_analyzed: boolean;
 }
-

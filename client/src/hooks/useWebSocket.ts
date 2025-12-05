@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import { useAppSelector } from '@/store/hooks';
-import { wsService } from '@/services/websocket';
+import { useEffect } from "react";
+import { useAppSelector } from "@/store/hooks";
+import { wsService } from "@/services/websocket";
 
 export function useWebSocket() {
   const { isAuthenticated, tokens } = useAppSelector((state) => state.auth);
@@ -23,4 +23,3 @@ export function useWebSocket() {
 
   return wsService;
 }
-

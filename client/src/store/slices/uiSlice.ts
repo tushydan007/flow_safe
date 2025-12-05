@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 interface MapView {
   center: [number, number];
@@ -27,13 +27,13 @@ const initialState: UIState = {
   showLegend: true,
   activeAnalysisType: null,
   isSearching: false,
-  searchQuery: '',
+  searchQuery: "",
   globalLoading: false,
   globalError: null,
 };
 
 const uiSlice = createSlice({
-  name: 'ui',
+  name: "ui",
   initialState,
   reducers: {
     toggleSidebar: (state) => {
@@ -86,4 +86,3 @@ export const {
   clearGlobalError,
 } = uiSlice.actions;
 export default uiSlice.reducer;
-

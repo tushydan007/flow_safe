@@ -1,5 +1,9 @@
-import apiClient, { withRetry } from './client';
-import type { AnalysisResult, AnalysisResultListItem, AnalysisSummary } from '@/types';
+import apiClient, { withRetry } from "./client";
+import type {
+  AnalysisResult,
+  AnalysisResultListItem,
+  AnalysisSummary,
+} from "@/types";
 
 interface AnalysisListResponse {
   success: boolean;
@@ -34,15 +38,17 @@ interface RunAnalysisResponse {
 }
 
 export const analysisApi = {
-  getResults: async (params: {
-    imageId?: number;
-    type?: string;
-    status?: string;
-  } = {}): Promise<{ data: AnalysisResultListItem[] }> => {
+  getResults: async (
+    params: {
+      imageId?: number;
+      type?: string;
+      status?: string;
+    } = {}
+  ): Promise<{ data: AnalysisResultListItem[] }> => {
     const queryParams = new URLSearchParams();
-    if (params.imageId) queryParams.append('image', String(params.imageId));
-    if (params.type) queryParams.append('type', params.type);
-    if (params.status) queryParams.append('status', params.status);
+    if (params.imageId) queryParams.append("image", String(params.imageId));
+    if (params.type) queryParams.append("type", params.type);
+    if (params.status) queryParams.append("status", params.status);
 
     const response = await withRetry(() =>
       apiClient.get<AnalysisListResponse>(`/analysis/results/?${queryParams}`)
@@ -57,9 +63,13 @@ export const analysisApi = {
     return { data: response.data.data };
   },
 
-  getResultsByImage: async (imageId: number): Promise<AnalysisByImageResponse> => {
+  getResultsByImage: async (
+    imageId: number
+  ): Promise<AnalysisByImageResponse> => {
     const response = await withRetry(() =>
-      apiClient.get<AnalysisByImageResponse>(`/analysis/results/by-image/${imageId}/`)
+      apiClient.get<AnalysisByImageResponse>(
+        `/analysis/results/by-image/${imageId}/`
+      )
     );
     return response.data;
   },
@@ -73,7 +83,7 @@ export const analysisApi = {
 
   getSummary: async (): Promise<{ data: AnalysisSummary[] }> => {
     const response = await withRetry(() =>
-      apiClient.get<AnalysisSummaryResponse>('/analysis/results/summary/')
+      apiClient.get<AnalysisSummaryResponse>("/analysis/results/summary/")
     );
     return { data: response.data.data };
   },
@@ -82,11 +92,13 @@ export const analysisApi = {
     imageId: number,
     analysisTypes?: string[]
   ): Promise<RunAnalysisResponse> => {
-    const response = await apiClient.post<RunAnalysisResponse>('/analysis/results/run/', {
-      image_id: imageId,
-      analysis_types: analysisTypes || ['all'],
-    });
+    const response = await apiClient.post<RunAnalysisResponse>(
+      "/analysis/results/run/",
+      {
+        image_id: imageId,
+        analysis_types: analysisTypes || ["all"],
+      }
+    );
     return response.data;
   },
 };
-

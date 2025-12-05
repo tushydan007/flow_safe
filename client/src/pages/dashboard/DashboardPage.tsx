@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
   Map,
   Satellite,
@@ -9,14 +9,14 @@ import {
   TrendingUp,
   MapPin,
   Clock,
-} from 'lucide-react';
+} from "lucide-react";
 
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { fetchPipelineRoutes } from '@/store/slices/pipelineSlice';
-import { fetchSatelliteImages } from '@/store/slices/satelliteSlice';
-import { fetchAlerts } from '@/store/slices/alertSlice';
-import { CardSkeleton } from '@/components/common/LoadingSkeleton';
-import { Button } from '@/components/ui/button';
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { fetchPipelineRoutes } from "@/store/slices/pipelineSlice";
+import { fetchSatelliteImages } from "@/store/slices/satelliteSlice";
+import { fetchAlerts } from "@/store/slices/alertSlice";
+import { CardSkeleton } from "@/components/common/LoadingSkeleton";
+import { Button } from "@/components/ui/button";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -35,11 +35,17 @@ const itemVariants = {
 
 export function DashboardPage() {
   const dispatch = useAppDispatch();
-  const { routes, isLoading: pipelineLoading } = useAppSelector((state) => state.pipeline);
-  const { images, isLoading: satelliteLoading } = useAppSelector((state) => state.satellite);
-  const { alerts, severityCounts, isLoading: alertsLoading } = useAppSelector(
-    (state) => state.alerts
+  const { routes, isLoading: pipelineLoading } = useAppSelector(
+    (state) => state.pipeline
   );
+  const { images, isLoading: satelliteLoading } = useAppSelector(
+    (state) => state.satellite
+  );
+  const {
+    alerts,
+    severityCounts,
+    isLoading: alertsLoading,
+  } = useAppSelector((state) => state.alerts);
   const { user } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
@@ -52,36 +58,36 @@ export function DashboardPage() {
 
   const stats = [
     {
-      title: 'Pipeline Routes',
+      title: "Pipeline Routes",
       value: routes.length,
       icon: MapPin,
-      color: 'text-blue-500',
-      bgColor: 'bg-blue-500/10',
-      href: '/map',
+      color: "text-blue-500",
+      bgColor: "bg-blue-500/10",
+      href: "/map",
     },
     {
-      title: 'Satellite Images',
+      title: "Satellite Images",
       value: images.length,
       icon: Satellite,
-      color: 'text-purple-500',
-      bgColor: 'bg-purple-500/10',
-      href: '/analysis',
+      color: "text-purple-500",
+      bgColor: "bg-purple-500/10",
+      href: "/analysis",
     },
     {
-      title: 'Active Alerts',
+      title: "Active Alerts",
       value: alerts.filter((a) => !a.is_acknowledged).length,
       icon: AlertTriangle,
-      color: 'text-orange-500',
-      bgColor: 'bg-orange-500/10',
-      href: '/alerts',
+      color: "text-orange-500",
+      bgColor: "bg-orange-500/10",
+      href: "/alerts",
     },
     {
-      title: 'Analyzed Images',
+      title: "Analyzed Images",
       value: images.filter((i) => i.is_analyzed).length,
       icon: Activity,
-      color: 'text-emerald-500',
-      bgColor: 'bg-emerald-500/10',
-      href: '/analysis',
+      color: "text-emerald-500",
+      bgColor: "bg-emerald-500/10",
+      href: "/analysis",
     },
   ];
 
@@ -107,7 +113,7 @@ export function DashboardPage() {
       {/* Welcome Section */}
       <motion.div variants={itemVariants} className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight">
-          Welcome back, {user?.first_name || 'User'}
+          Welcome back, {user?.first_name || "User"}
         </h1>
         <p className="text-muted-foreground">
           Here&apos;s an overview of your pipeline monitoring system
@@ -156,10 +162,13 @@ export function DashboardPage() {
               <AlertTriangle className="h-5 w-5 text-destructive" />
             </div>
             <div className="flex-1">
-              <h3 className="font-semibold text-destructive">Attention Required</h3>
+              <h3 className="font-semibold text-destructive">
+                Attention Required
+              </h3>
               <p className="text-sm text-muted-foreground mt-1">
-                You have {severityCounts.critical} critical and {severityCounts.high} high
-                severity alerts that need immediate attention.
+                You have {severityCounts.critical} critical and{" "}
+                {severityCounts.high} high severity alerts that need immediate
+                attention.
               </p>
               <Button
                 variant="outline"
@@ -250,13 +259,13 @@ export function DashboardPage() {
                 >
                   <div
                     className={`p-2 rounded-full ${
-                      alert.severity === 'critical'
-                        ? 'bg-red-500/10 text-red-500'
-                        : alert.severity === 'high'
-                          ? 'bg-orange-500/10 text-orange-500'
-                          : alert.severity === 'medium'
-                            ? 'bg-yellow-500/10 text-yellow-500'
-                            : 'bg-blue-500/10 text-blue-500'
+                      alert.severity === "critical"
+                        ? "bg-red-500/10 text-red-500"
+                        : alert.severity === "high"
+                        ? "bg-orange-500/10 text-orange-500"
+                        : alert.severity === "medium"
+                        ? "bg-yellow-500/10 text-yellow-500"
+                        : "bg-blue-500/10 text-blue-500"
                     }`}
                   >
                     <AlertTriangle className="h-4 w-4" />
@@ -269,7 +278,9 @@ export function DashboardPage() {
                   </div>
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Clock className="h-4 w-4" />
-                    <span>{new Date(alert.created_at).toLocaleDateString()}</span>
+                    <span>
+                      {new Date(alert.created_at).toLocaleDateString()}
+                    </span>
                   </div>
                 </div>
               ))}
@@ -285,4 +296,3 @@ export function DashboardPage() {
     </motion.div>
   );
 }
-

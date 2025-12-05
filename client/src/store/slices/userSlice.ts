@@ -1,6 +1,10 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { userApi } from '@/services/api/user';
-import type { Organization, UserSettings } from '@/types/user';
+import {
+  createSlice,
+  createAsyncThunk,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
+import { userApi } from "@/services/api/user";
+import type { Organization, UserSettings } from "@/types/user";
 
 interface UserState {
   organization: Organization | null;
@@ -17,59 +21,65 @@ const initialState: UserState = {
 };
 
 export const fetchOrganization = createAsyncThunk(
-  'user/fetchOrganization',
+  "user/fetchOrganization",
   async (_, { rejectWithValue }) => {
     try {
       const response = await userApi.getOrganization();
       return response.data;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to fetch organization';
+      const message =
+        error instanceof Error ? error.message : "Failed to fetch organization";
       return rejectWithValue(message);
     }
   }
 );
 
 export const updateOrganization = createAsyncThunk(
-  'user/updateOrganization',
+  "user/updateOrganization",
   async (data: Partial<Organization>, { rejectWithValue }) => {
     try {
       const response = await userApi.updateOrganization(data);
       return response.data;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to update organization';
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Failed to update organization";
       return rejectWithValue(message);
     }
   }
 );
 
 export const fetchSettings = createAsyncThunk(
-  'user/fetchSettings',
+  "user/fetchSettings",
   async (_, { rejectWithValue }) => {
     try {
       const response = await userApi.getSettings();
       return response.data;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to fetch settings';
+      const message =
+        error instanceof Error ? error.message : "Failed to fetch settings";
       return rejectWithValue(message);
     }
   }
 );
 
 export const updateSettings = createAsyncThunk(
-  'user/updateSettings',
+  "user/updateSettings",
   async (data: Partial<UserSettings>, { rejectWithValue }) => {
     try {
       const response = await userApi.updateSettings(data);
       return response.data;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to update settings';
+      const message =
+        error instanceof Error ? error.message : "Failed to update settings";
       return rejectWithValue(message);
     }
   }
 );
 
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
     clearUserError: (state) => {
@@ -136,4 +146,3 @@ const userSlice = createSlice({
 
 export const { clearUserError, resetUserState } = userSlice.actions;
 export default userSlice.reducer;
-

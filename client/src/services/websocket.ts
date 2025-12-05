@@ -1,10 +1,10 @@
-import { store } from '@/store';
-import { addNewAlert } from '@/store/slices/alertSlice';
-import { updateImageStatus } from '@/store/slices/satelliteSlice';
-import { updateAnalysisProgress } from '@/store/slices/analysisSlice';
-import type { Alert } from '@/types/alert';
+import { store } from "@/store";
+import { addNewAlert } from "@/store/slices/alertSlice";
+import { updateImageStatus } from "@/store/slices/satelliteSlice";
+import { updateAnalysisProgress } from "@/store/slices/analysisSlice";
+import type { Alert } from "@/types/alert";
 
-const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:8000';
+const WS_URL = import.meta.env.VITE_WS_URL || "ws://localhost:8000";
 
 type WebSocketMessage = {
   type: string;
@@ -24,7 +24,7 @@ class WebSocketService {
     const token = state.auth.tokens?.access;
 
     if (!token) {
-      console.warn('No auth token available for WebSocket connection');
+      console.warn("No auth token available for WebSocket connection");
       return;
     }
 
@@ -37,10 +37,12 @@ class WebSocketService {
       return;
     }
 
-    this.pipelineSocket = new WebSocket(`${WS_URL}/ws/pipeline/?token=${token}`);
+    this.pipelineSocket = new WebSocket(
+      `${WS_URL}/ws/pipeline/?token=${token}`
+    );
 
     this.pipelineSocket.onopen = () => {
-      console.log('Pipeline WebSocket connected');
+      console.log("Pipeline WebSocket connected");
       this.reconnectAttempts = 0;
     };
 
@@ -49,17 +51,17 @@ class WebSocketService {
         const message: WebSocketMessage = JSON.parse(event.data);
         this.handlePipelineMessage(message);
       } catch (error) {
-        console.error('Error parsing WebSocket message:', error);
+        console.error("Error parsing WebSocket message:", error);
       }
     };
 
     this.pipelineSocket.onerror = (error) => {
-      console.error('Pipeline WebSocket error:', error);
+      console.error("Pipeline WebSocket error:", error);
     };
 
     this.pipelineSocket.onclose = () => {
-      console.log('Pipeline WebSocket closed');
-      this.attemptReconnect('pipeline');
+      console.log("Pipeline WebSocket closed");
+      this.attemptReconnect("pipeline");
     };
   }
 
@@ -71,7 +73,7 @@ class WebSocketService {
     this.alertSocket = new WebSocket(`${WS_URL}/ws/alerts/?token=${token}`);
 
     this.alertSocket.onopen = () => {
-      console.log('Alert WebSocket connected');
+      console.log("Alert WebSocket connected");
     };
 
     this.alertSocket.onmessage = (event) => {
@@ -79,23 +81,23 @@ class WebSocketService {
         const message: WebSocketMessage = JSON.parse(event.data);
         this.handleAlertMessage(message);
       } catch (error) {
-        console.error('Error parsing WebSocket message:', error);
+        console.error("Error parsing WebSocket message:", error);
       }
     };
 
     this.alertSocket.onerror = (error) => {
-      console.error('Alert WebSocket error:', error);
+      console.error("Alert WebSocket error:", error);
     };
 
     this.alertSocket.onclose = () => {
-      console.log('Alert WebSocket closed');
-      this.attemptReconnect('alert');
+      console.log("Alert WebSocket closed");
+      this.attemptReconnect("alert");
     };
   }
 
   private handlePipelineMessage(message: WebSocketMessage) {
     switch (message.type) {
-      case 'image_update':
+      case "image_update":
         store.dispatch(
           updateImageStatus({
             id: message.data.id as number,
@@ -105,7 +107,7 @@ class WebSocketService {
         );
         break;
 
-      case 'analysis_progress':
+      case "analysis_progress":
         store.dispatch(
           updateAnalysisProgress({
             id: message.data.id as number,
@@ -115,36 +117,36 @@ class WebSocketService {
         );
         break;
 
-      case 'analysis_complete':
-        console.log('Analysis complete:', message.data);
+      case "analysis_complete":
+        console.log("Analysis complete:", message.data);
         break;
 
-      case 'pipeline_update':
-        console.log('Pipeline update:', message.data);
+      case "pipeline_update":
+        console.log("Pipeline update:", message.data);
         break;
 
       default:
-        console.log('Unknown pipeline message type:', message.type);
+        console.log("Unknown pipeline message type:", message.type);
     }
   }
 
   private handleAlertMessage(message: WebSocketMessage) {
     switch (message.type) {
-      case 'new_alert':
-      case 'critical_alert':
+      case "new_alert":
+      case "critical_alert":
         store.dispatch(addNewAlert(message.data as unknown as Alert));
         break;
 
-      case 'alert_update':
-        console.log('Alert update:', message.data);
+      case "alert_update":
+        console.log("Alert update:", message.data);
         break;
 
       default:
-        console.log('Unknown alert message type:', message.type);
+        console.log("Unknown alert message type:", message.type);
     }
   }
 
-  private attemptReconnect(socketType: 'pipeline' | 'alert') {
+  private attemptReconnect(socketType: "pipeline" | "alert") {
     if (this.reconnectAttempts >= this.maxReconnectAttempts) {
       console.error(`Max reconnect attempts reached for ${socketType} socket`);
       return;
@@ -153,14 +155,16 @@ class WebSocketService {
     this.reconnectAttempts++;
     const delay = this.reconnectDelay * Math.pow(2, this.reconnectAttempts - 1);
 
-    console.log(`Attempting to reconnect ${socketType} socket in ${delay}ms...`);
+    console.log(
+      `Attempting to reconnect ${socketType} socket in ${delay}ms...`
+    );
 
     setTimeout(() => {
       const state = store.getState();
       const token = state.auth.tokens?.access;
 
       if (token) {
-        if (socketType === 'pipeline') {
+        if (socketType === "pipeline") {
           this.connectPipelineSocket(token);
         } else {
           this.connectAlertSocket(token);
@@ -194,10 +198,9 @@ class WebSocketService {
   }
 
   ping() {
-    this.sendPipelineMessage({ type: 'ping' });
-    this.sendAlertMessage({ type: 'ping' });
+    this.sendPipelineMessage({ type: "ping" });
+    this.sendAlertMessage({ type: "ping" });
   }
 }
 
 export const wsService = new WebSocketService();
-

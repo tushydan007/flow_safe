@@ -14,26 +14,26 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      '/api': {
-        target: 'http://localhost:8000',
+      "/api": {
+        target: "http://localhost:8000",
         changeOrigin: true,
       },
-      '/ws': {
-        target: 'ws://localhost:8000',
+      "/ws": {
+        target: "ws://localhost:8000",
         ws: true,
       },
     },
   },
   build: {
-    outDir: 'dist',
+    outDir: "dist",
     sourcemap: true,
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router-dom'],
-          redux: ['@reduxjs/toolkit', 'react-redux', 'redux-persist'],
-          ui: ['framer-motion', 'lucide-react'],
-          map: ['leaflet', 'react-leaflet'],
+          vendor: ["react", "react-dom", "react-router-dom"],
+          redux: ["@reduxjs/toolkit", "react-redux", "redux-persist"],
+          ui: ["framer-motion", "lucide-react"],
+          map: ["leaflet", "react-leaflet"],
         },
       },
     },

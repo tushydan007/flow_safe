@@ -1,7 +1,13 @@
-import type { Coordinates } from './pipeline';
-import type { Severity } from './analysis';
+import type { Coordinates } from "./pipeline";
+import type { Severity } from "./analysis";
 
-export type AlertType = 'leak' | 'change' | 'encroachment' | 'emission' | 'facility' | 'system';
+export type AlertType =
+  | "leak"
+  | "change"
+  | "encroachment"
+  | "emission"
+  | "facility"
+  | "system";
 
 export interface Alert {
   id: number;
@@ -39,4 +45,3 @@ export interface AlertsResponse {
   severity_counts: AlertSeverityCounts;
   data: Alert[];
 }
-

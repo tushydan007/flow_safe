@@ -1,8 +1,8 @@
-import { motion } from 'framer-motion';
-import { X, MapPin, Clock, AlertTriangle, CheckCircle } from 'lucide-react';
-import type { AnalysisResult } from '@/types/analysis';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { motion } from "framer-motion";
+import { X, MapPin, Clock, AlertTriangle, CheckCircle } from "lucide-react";
+import type { AnalysisResult } from "@/types/analysis";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface AnalysisDetailPanelProps {
   result: AnalysisResult;
@@ -10,13 +10,16 @@ interface AnalysisDetailPanelProps {
 }
 
 const severityColors = {
-  critical: 'text-red-500',
-  high: 'text-orange-500',
-  medium: 'text-yellow-500',
-  low: 'text-emerald-500',
+  critical: "text-red-500",
+  high: "text-orange-500",
+  medium: "text-yellow-500",
+  low: "text-emerald-500",
 };
 
-export function AnalysisDetailPanel({ result, onClose }: AnalysisDetailPanelProps) {
+export function AnalysisDetailPanel({
+  result,
+  onClose,
+}: AnalysisDetailPanelProps) {
   const detections = result.result_data?.detections || [];
   const severityCounts = result.result_data?.severity_counts || {};
 
@@ -38,26 +41,37 @@ export function AnalysisDetailPanel({ result, onClose }: AnalysisDetailPanelProp
         {/* Summary */}
         <div className="space-y-2">
           <h3 className="font-medium text-sm text-muted-foreground">Summary</h3>
-          <p className="text-sm">{result.summary || 'No summary available'}</p>
+          <p className="text-sm">{result.summary || "No summary available"}</p>
         </div>
 
         {/* Severity Counts */}
         <div className="space-y-2">
-          <h3 className="font-medium text-sm text-muted-foreground">Severity Breakdown</h3>
+          <h3 className="font-medium text-sm text-muted-foreground">
+            Severity Breakdown
+          </h3>
           <div className="grid grid-cols-2 gap-2">
             {Object.entries(severityCounts).map(([severity, count]) => (
               <div
                 key={severity}
                 className={cn(
-                  'flex items-center justify-between p-3 rounded-lg border',
-                  severity === 'critical' && 'border-red-200 bg-red-50 dark:border-red-900/50 dark:bg-red-900/10',
-                  severity === 'high' && 'border-orange-200 bg-orange-50 dark:border-orange-900/50 dark:bg-orange-900/10',
-                  severity === 'medium' && 'border-yellow-200 bg-yellow-50 dark:border-yellow-900/50 dark:bg-yellow-900/10',
-                  severity === 'low' && 'border-emerald-200 bg-emerald-50 dark:border-emerald-900/50 dark:bg-emerald-900/10'
+                  "flex items-center justify-between p-3 rounded-lg border",
+                  severity === "critical" &&
+                    "border-red-200 bg-red-50 dark:border-red-900/50 dark:bg-red-900/10",
+                  severity === "high" &&
+                    "border-orange-200 bg-orange-50 dark:border-orange-900/50 dark:bg-orange-900/10",
+                  severity === "medium" &&
+                    "border-yellow-200 bg-yellow-50 dark:border-yellow-900/50 dark:bg-yellow-900/10",
+                  severity === "low" &&
+                    "border-emerald-200 bg-emerald-50 dark:border-emerald-900/50 dark:bg-emerald-900/10"
                 )}
               >
                 <span className="text-sm capitalize">{severity}</span>
-                <span className={cn('font-bold', severityColors[severity as keyof typeof severityColors])}>
+                <span
+                  className={cn(
+                    "font-bold",
+                    severityColors[severity as keyof typeof severityColors]
+                  )}
+                >
                   {count}
                 </span>
               </div>
@@ -83,8 +97,10 @@ export function AnalysisDetailPanel({ result, onClose }: AnalysisDetailPanelProp
                   <div className="flex items-center gap-2">
                     <AlertTriangle
                       className={cn(
-                        'h-4 w-4',
-                        severityColors[detection.severity as keyof typeof severityColors]
+                        "h-4 w-4",
+                        severityColors[
+                          detection.severity as keyof typeof severityColors
+                        ]
                       )}
                     />
                     <span className="font-medium text-sm capitalize">
@@ -102,7 +118,8 @@ export function AnalysisDetailPanel({ result, onClose }: AnalysisDetailPanelProp
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <MapPin className="h-3 w-3" />
                     <span>
-                      {detection.location.lat.toFixed(6)}, {detection.location.lng.toFixed(6)}
+                      {detection.location.lat.toFixed(6)},{" "}
+                      {detection.location.lng.toFixed(6)}
                     </span>
                   </div>
                 )}
@@ -128,11 +145,12 @@ export function AnalysisDetailPanel({ result, onClose }: AnalysisDetailPanelProp
         {result.processing_time_seconds && (
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Clock className="h-4 w-4" />
-            <span>Processed in {result.processing_time_seconds.toFixed(1)} seconds</span>
+            <span>
+              Processed in {result.processing_time_seconds.toFixed(1)} seconds
+            </span>
           </div>
         )}
       </div>
     </motion.div>
   );
 }
-

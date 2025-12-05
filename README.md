@@ -7,7 +7,7 @@ A comprehensive full-stack geospatial application for pipeline monitoring with s
 - **User Authentication**: Email-based login with JWT tokens using Djoser
 - **Organization Management**: One-to-one relationship with users for multi-tenant support
 - **Pipeline Route Management**: Upload and visualize GeoJSON pipeline routes
-- **Satellite Image Analysis**: 
+- **Satellite Image Analysis**:
   - NDVI-based leak detection
   - Change detection using image differencing
   - Encroachment detection using YOLO object detection
@@ -21,6 +21,7 @@ A comprehensive full-stack geospatial application for pipeline monitoring with s
 ## Tech Stack
 
 ### Backend
+
 - Django 4.2
 - Django REST Framework
 - Djoser for authentication
@@ -32,6 +33,7 @@ A comprehensive full-stack geospatial application for pipeline monitoring with s
 - Segmentation Models PyTorch for U-Net
 
 ### Frontend
+
 - React 19 with TypeScript
 - Vite 7
 - Tailwind CSS 4 (latest without tailwind.config.js)
@@ -171,18 +173,21 @@ VITE_WS_URL=ws://localhost:8000
 ## API Endpoints
 
 ### Authentication
+
 - `POST /api/v1/auth/users/` - Register
 - `POST /api/v1/auth/jwt/create/` - Login
 - `POST /api/v1/auth/jwt/refresh/` - Refresh token
 - `GET /api/v1/auth/users/me/` - Get current user
 
 ### Pipeline
+
 - `GET /api/v1/pipeline/routes/` - List pipeline routes
 - `GET /api/v1/pipeline/routes/all-geojson/` - Get all routes as GeoJSON
 - `GET /api/v1/pipeline/images/` - List satellite images
 - `GET /api/v1/pipeline/alerts/` - List alerts
 
 ### Analysis
+
 - `GET /api/v1/analysis/results/` - List analysis results
 - `POST /api/v1/analysis/results/run/` - Run analysis on image
 - `GET /api/v1/analysis/results/summary/` - Get analysis summary
@@ -190,6 +195,7 @@ VITE_WS_URL=ws://localhost:8000
 ## Admin Panel
 
 Access the Django admin at `http://localhost:8000/admin/` to:
+
 - Upload GeoJSON pipeline routes
 - Upload TIFF satellite images
 - Run image analysis
@@ -198,4 +204,3 @@ Access the Django admin at `http://localhost:8000/admin/` to:
 ## License
 
 MIT
-

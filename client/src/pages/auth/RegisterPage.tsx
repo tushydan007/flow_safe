@@ -1,33 +1,40 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { motion } from 'framer-motion';
-import { Eye, EyeOff, UserPlus, Loader2, MapPin, CheckCircle } from 'lucide-react';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { motion } from "framer-motion";
+import {
+  Eye,
+  EyeOff,
+  UserPlus,
+  Loader2,
+  MapPin,
+  CheckCircle,
+} from "lucide-react";
 
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { register as registerUser, clearError } from '@/store/slices/authSlice';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { register as registerUser, clearError } from "@/store/slices/authSlice";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const registerSchema = z
   .object({
-    email: z.string().email('Please enter a valid email address'),
-    first_name: z.string().min(2, 'First name must be at least 2 characters'),
-    last_name: z.string().min(2, 'Last name must be at least 2 characters'),
+    email: z.string().email("Please enter a valid email address"),
+    first_name: z.string().min(2, "First name must be at least 2 characters"),
+    last_name: z.string().min(2, "Last name must be at least 2 characters"),
     password: z
       .string()
-      .min(8, 'Password must be at least 8 characters')
-      .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-      .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
-      .regex(/[0-9]/, 'Password must contain at least one number'),
+      .min(8, "Password must be at least 8 characters")
+      .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+      .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+      .regex(/[0-9]/, "Password must contain at least one number"),
     re_password: z.string(),
   })
   .refine((data) => data.password === data.re_password, {
-    message: 'Passwords do not match',
-    path: ['re_password'],
+    message: "Passwords do not match",
+    path: ["re_password"],
   });
 
 type RegisterFormData = z.infer<typeof registerSchema>;
@@ -47,11 +54,11 @@ export function RegisterPage() {
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      email: '',
-      first_name: '',
-      last_name: '',
-      password: '',
-      re_password: '',
+      email: "",
+      first_name: "",
+      last_name: "",
+      password: "",
+      re_password: "",
     },
   });
 
@@ -61,7 +68,7 @@ export function RegisterPage() {
     if (registerUser.fulfilled.match(result)) {
       setIsSuccess(true);
       setTimeout(() => {
-        navigate('/login');
+        navigate("/login");
       }, 2000);
     }
   };
@@ -133,11 +140,13 @@ export function RegisterPage() {
             <Input
               id="first_name"
               placeholder="John"
-              {...register('first_name')}
-              className={errors.first_name ? 'border-destructive' : ''}
+              {...register("first_name")}
+              className={errors.first_name ? "border-destructive" : ""}
             />
             {errors.first_name && (
-              <p className="text-xs text-destructive">{errors.first_name.message}</p>
+              <p className="text-xs text-destructive">
+                {errors.first_name.message}
+              </p>
             )}
           </div>
 
@@ -146,11 +155,13 @@ export function RegisterPage() {
             <Input
               id="last_name"
               placeholder="Doe"
-              {...register('last_name')}
-              className={errors.last_name ? 'border-destructive' : ''}
+              {...register("last_name")}
+              className={errors.last_name ? "border-destructive" : ""}
             />
             {errors.last_name && (
-              <p className="text-xs text-destructive">{errors.last_name.message}</p>
+              <p className="text-xs text-destructive">
+                {errors.last_name.message}
+              </p>
             )}
           </div>
         </div>
@@ -162,8 +173,8 @@ export function RegisterPage() {
             type="email"
             placeholder="name@example.com"
             autoComplete="email"
-            {...register('email')}
-            className={errors.email ? 'border-destructive' : ''}
+            {...register("email")}
+            className={errors.email ? "border-destructive" : ""}
           />
           {errors.email && (
             <p className="text-sm text-destructive">{errors.email.message}</p>
@@ -175,22 +186,28 @@ export function RegisterPage() {
           <div className="relative">
             <Input
               id="password"
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               placeholder="Create a strong password"
               autoComplete="new-password"
-              {...register('password')}
-              className={errors.password ? 'border-destructive pr-10' : 'pr-10'}
+              {...register("password")}
+              className={errors.password ? "border-destructive pr-10" : "pr-10"}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
             >
-              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              {showPassword ? (
+                <EyeOff className="w-4 h-4" />
+              ) : (
+                <Eye className="w-4 h-4" />
+              )}
             </button>
           </div>
           {errors.password && (
-            <p className="text-sm text-destructive">{errors.password.message}</p>
+            <p className="text-sm text-destructive">
+              {errors.password.message}
+            </p>
           )}
         </div>
 
@@ -199,22 +216,30 @@ export function RegisterPage() {
           <div className="relative">
             <Input
               id="re_password"
-              type={showConfirmPassword ? 'text' : 'password'}
+              type={showConfirmPassword ? "text" : "password"}
               placeholder="Confirm your password"
               autoComplete="new-password"
-              {...register('re_password')}
-              className={errors.re_password ? 'border-destructive pr-10' : 'pr-10'}
+              {...register("re_password")}
+              className={
+                errors.re_password ? "border-destructive pr-10" : "pr-10"
+              }
             />
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
             >
-              {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              {showConfirmPassword ? (
+                <EyeOff className="w-4 h-4" />
+              ) : (
+                <Eye className="w-4 h-4" />
+              )}
             </button>
           </div>
           {errors.re_password && (
-            <p className="text-sm text-destructive">{errors.re_password.message}</p>
+            <p className="text-sm text-destructive">
+              {errors.re_password.message}
+            </p>
           )}
         </div>
 
@@ -235,7 +260,7 @@ export function RegisterPage() {
 
       {/* Footer */}
       <p className="text-center text-sm text-muted-foreground">
-        Already have an account?{' '}
+        Already have an account?{" "}
         <Link
           to="/login"
           className="font-medium text-primary hover:underline underline-offset-4"
@@ -246,4 +271,3 @@ export function RegisterPage() {
     </motion.div>
   );
 }
-

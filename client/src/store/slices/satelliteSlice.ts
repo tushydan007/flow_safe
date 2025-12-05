@@ -1,6 +1,10 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { satelliteApi } from '@/services/api/satellite';
-import type { SatelliteImage, SatelliteImageDropdown } from '@/types/satellite';
+import {
+  createSlice,
+  createAsyncThunk,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
+import { satelliteApi } from "@/services/api/satellite";
+import type { SatelliteImage, SatelliteImageDropdown } from "@/types/satellite";
 
 interface SatelliteState {
   images: SatelliteImage[];
@@ -19,53 +23,64 @@ const initialState: SatelliteState = {
 };
 
 export const fetchSatelliteImages = createAsyncThunk(
-  'satellite/fetchImages',
-  async (params: { status?: string; isAnalyzed?: boolean } = {}, { rejectWithValue }) => {
+  "satellite/fetchImages",
+  async (
+    params: { status?: string; isAnalyzed?: boolean } = {},
+    { rejectWithValue }
+  ) => {
     try {
       const response = await satelliteApi.getImages(params);
       return response.data;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to fetch images';
+      const message =
+        error instanceof Error ? error.message : "Failed to fetch images";
       return rejectWithValue(message);
     }
   }
 );
 
 export const fetchSatelliteImage = createAsyncThunk(
-  'satellite/fetchImage',
+  "satellite/fetchImage",
   async (id: number, { rejectWithValue }) => {
     try {
       const response = await satelliteApi.getImage(id);
       return response.data;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to fetch image';
+      const message =
+        error instanceof Error ? error.message : "Failed to fetch image";
       return rejectWithValue(message);
     }
   }
 );
 
 export const fetchDropdownList = createAsyncThunk(
-  'satellite/fetchDropdownList',
+  "satellite/fetchDropdownList",
   async (_, { rejectWithValue }) => {
     try {
       const response = await satelliteApi.getDropdownList();
       return response.data;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to fetch dropdown list';
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Failed to fetch dropdown list";
       return rejectWithValue(message);
     }
   }
 );
 
 const satelliteSlice = createSlice({
-  name: 'satellite',
+  name: "satellite",
   initialState,
   reducers: {
     selectImage: (state, action: PayloadAction<SatelliteImage | null>) => {
       state.selectedImage = action.payload;
     },
-    updateImageStatus: (state, action: PayloadAction<{ id: number; status: string; progress?: number }>) => {
-      const image = state.images.find(img => img.id === action.payload.id);
+    updateImageStatus: (
+      state,
+      action: PayloadAction<{ id: number; status: string; progress?: number }>
+    ) => {
+      const image = state.images.find((img) => img.id === action.payload.id);
       if (image) {
         image.status = action.payload.status;
       }
@@ -118,6 +133,10 @@ const satelliteSlice = createSlice({
   },
 });
 
-export const { selectImage, updateImageStatus, clearSatelliteError, resetSatelliteState } = satelliteSlice.actions;
+export const {
+  selectImage,
+  updateImageStatus,
+  clearSatelliteError,
+  resetSatelliteState,
+} = satelliteSlice.actions;
 export default satelliteSlice.reducer;
-

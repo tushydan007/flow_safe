@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import {
   BarChart3,
   AlertTriangle,
@@ -7,22 +7,25 @@ import {
   Clock,
   Loader2,
   ChevronRight,
-} from 'lucide-react';
+} from "lucide-react";
 
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { fetchDropdownList } from '@/store/slices/satelliteSlice';
-import { fetchResultsByImage, selectResult } from '@/store/slices/analysisSlice';
-import { Button } from '@/components/ui/button';
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { fetchDropdownList } from "@/store/slices/satelliteSlice";
+import {
+  fetchResultsByImage,
+  selectResult,
+} from "@/store/slices/analysisSlice";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { CardSkeleton } from '@/components/common/LoadingSkeleton';
-import { AnalysisResultCard } from '@/components/analysis/AnalysisResultCard';
-import { AnalysisDetailPanel } from '@/components/analysis/AnalysisDetailPanel';
+} from "@/components/ui/select";
+import { CardSkeleton } from "@/components/common/LoadingSkeleton";
+import { AnalysisResultCard } from "@/components/analysis/AnalysisResultCard";
+import { AnalysisDetailPanel } from "@/components/analysis/AnalysisDetailPanel";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -43,7 +46,7 @@ export function AnalysisPage() {
   const { currentImageResults, selectedResult, isLoading } = useAppSelector(
     (state) => state.analysis
   );
-  const [selectedImageId, setSelectedImageId] = useState<string>('');
+  const [selectedImageId, setSelectedImageId] = useState<string>("");
 
   useEffect(() => {
     dispatch(fetchDropdownList());
@@ -56,10 +59,10 @@ export function AnalysisPage() {
 
   const getSeverityIcon = (severity: string | null) => {
     switch (severity) {
-      case 'critical':
-      case 'high':
+      case "critical":
+      case "high":
         return <AlertTriangle className="h-4 w-4 text-destructive" />;
-      case 'medium':
+      case "medium":
         return <Clock className="h-4 w-4 text-yellow-500" />;
       default:
         return <CheckCircle className="h-4 w-4 text-emerald-500" />;
@@ -77,7 +80,9 @@ export function AnalysisPage() {
       >
         {/* Header */}
         <motion.div variants={itemVariants} className="space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight">Analysis Results</h1>
+          <h1 className="text-3xl font-bold tracking-tight">
+            Analysis Results
+          </h1>
           <p className="text-muted-foreground">
             View satellite image analysis results and detected anomalies
           </p>
@@ -164,4 +169,3 @@ export function AnalysisPage() {
     </div>
   );
 }
-

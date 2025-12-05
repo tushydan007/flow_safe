@@ -1,24 +1,31 @@
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import { Search, Layers, ZoomIn, ZoomOut, Locate, X } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { Search, Layers, ZoomIn, ZoomOut, Locate, X } from "lucide-react";
 
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { fetchPipelineRoutes, fetchAllGeoJSON } from '@/store/slices/pipelineSlice';
-import { fetchDropdownList, selectImage } from '@/store/slices/satelliteSlice';
-import { fetchResultsByImage } from '@/store/slices/analysisSlice';
-import { toggleLegend, setSearchQuery, setSearching } from '@/store/slices/uiSlice';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import {
+  fetchPipelineRoutes,
+  fetchAllGeoJSON,
+} from "@/store/slices/pipelineSlice";
+import { fetchDropdownList, selectImage } from "@/store/slices/satelliteSlice";
+import { fetchResultsByImage } from "@/store/slices/analysisSlice";
+import {
+  toggleLegend,
+  setSearchQuery,
+  setSearching,
+} from "@/store/slices/uiSlice";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { MapContainer } from '@/components/map/MapContainer';
-import { MapLegend } from '@/components/map/MapLegend';
-import { MapSkeleton } from '@/components/common/LoadingSkeleton';
+} from "@/components/ui/select";
+import { MapContainer } from "@/components/map/MapContainer";
+import { MapLegend } from "@/components/map/MapLegend";
+import { MapSkeleton } from "@/components/common/LoadingSkeleton";
 
 interface SearchResult {
   display_name: string;
@@ -28,10 +35,14 @@ interface SearchResult {
 
 export function MapPage() {
   const dispatch = useAppDispatch();
-  const { routes, allGeoJSON, isLoading: pipelineLoading } = useAppSelector(
-    (state) => state.pipeline
+  const {
+    routes,
+    allGeoJSON,
+    isLoading: pipelineLoading,
+  } = useAppSelector((state) => state.pipeline);
+  const { dropdownList, selectedImage } = useAppSelector(
+    (state) => state.satellite
   );
-  const { dropdownList, selectedImage } = useAppSelector((state) => state.satellite);
   const { currentImageResults } = useAppSelector((state) => state.analysis);
   const { showLegend, searchQuery } = useAppSelector((state) => state.ui);
 
@@ -53,18 +64,18 @@ export function MapPage() {
   }, [dispatch, selectedImage]);
 
   const handleImageSelect = async (imageId: string) => {
-    if (imageId === 'none') {
+    if (imageId === "none") {
       dispatch(selectImage(null));
       return;
     }
-    
+
     const image = dropdownList.find((img) => img.id === Number(imageId));
     if (image) {
       // Fetch full image data
-      const { satelliteApi } = await import('@/services/api/satellite');
+      const { satelliteApi } = await import("@/services/api/satellite");
       const response = await satelliteApi.getImage(image.id);
       dispatch(selectImage(response.data));
-      
+
       // Center map on image
       if (response.data.center) {
         setMapCenter([response.data.center.lat, response.data.center.lng]);
@@ -88,7 +99,7 @@ export function MapPage() {
       const data = await response.json();
       setSearchResults(data.slice(0, 5));
     } catch (error) {
-      console.error('Search failed:', error);
+      console.error("Search failed:", error);
     } finally {
       setIsSearchingLocation(false);
       dispatch(setSearching(false));
@@ -99,7 +110,7 @@ export function MapPage() {
     setMapCenter([parseFloat(result.lat), parseFloat(result.lon)]);
     setMapZoom(14);
     setSearchResults([]);
-    dispatch(setSearchQuery(''));
+    dispatch(setSearchQuery(""));
   };
 
   const handleZoomIn = () => setMapZoom((z) => Math.min(z + 1, 18));
@@ -128,13 +139,13 @@ export function MapPage() {
             placeholder="Search location..."
             value={searchQuery}
             onChange={(e) => dispatch(setSearchQuery(e.target.value))}
-            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             className="pl-9"
           />
           {searchQuery && (
             <button
               onClick={() => {
-                dispatch(setSearchQuery(''));
+                dispatch(setSearchQuery(""));
                 setSearchResults([]);
               }}
               className="absolute right-3 top-1/2 -translate-y-1/2"
@@ -161,7 +172,7 @@ export function MapPage() {
 
         {/* Image Selector */}
         <Select
-          value={selectedImage?.id.toString() || 'none'}
+          value={selectedImage?.id.toString() || "none"}
           onValueChange={handleImageSelect}
         >
           <SelectTrigger className="w-[280px]">
@@ -179,7 +190,7 @@ export function MapPage() {
 
         {/* Legend Toggle */}
         <Button
-          variant={showLegend ? 'default' : 'outline'}
+          variant={showLegend ? "default" : "outline"}
           size="icon"
           onClick={() => dispatch(toggleLegend())}
         >
@@ -213,7 +224,10 @@ export function MapPage() {
             onClick={() => {
               if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition((position) => {
-                  setMapCenter([position.coords.latitude, position.coords.longitude]);
+                  setMapCenter([
+                    position.coords.latitude,
+                    position.coords.longitude,
+                  ]);
                   setMapZoom(14);
                 });
               }
@@ -238,4 +252,3 @@ export function MapPage() {
     </div>
   );
 }
-

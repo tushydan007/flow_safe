@@ -1,5 +1,10 @@
-import apiClient, { withRetry } from './client';
-import type { PipelineRoute, PipelineRouteListItem, GeoJSONData, ApiResponse } from '@/types';
+import apiClient, { withRetry } from "./client";
+import type {
+  PipelineRoute,
+  PipelineRouteListItem,
+  GeoJSONData,
+  ApiResponse,
+} from "@/types";
 
 interface PipelineListResponse {
   success: boolean;
@@ -20,7 +25,7 @@ interface GeoJSONResponse {
 export const pipelineApi = {
   getRoutes: async (): Promise<{ data: PipelineRouteListItem[] }> => {
     const response = await withRetry(() =>
-      apiClient.get<PipelineListResponse>('/pipeline/routes/')
+      apiClient.get<PipelineListResponse>("/pipeline/routes/")
     );
     return { data: response.data.data };
   },
@@ -41,9 +46,8 @@ export const pipelineApi = {
 
   getAllGeoJSON: async (): Promise<{ data: GeoJSONData }> => {
     const response = await withRetry(() =>
-      apiClient.get<GeoJSONResponse>('/pipeline/routes/all-geojson/')
+      apiClient.get<GeoJSONResponse>("/pipeline/routes/all-geojson/")
     );
     return { data: response.data.data };
   },
 };
-

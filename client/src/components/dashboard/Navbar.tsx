@@ -1,5 +1,5 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
   MapPin,
   Menu,
@@ -10,14 +10,14 @@ import {
   Moon,
   Sun,
   Monitor,
-} from 'lucide-react';
+} from "lucide-react";
 
-import { useAppSelector, useAppDispatch } from '@/store/hooks';
-import { logout } from '@/store/slices/authSlice';
-import { toggleSidebar } from '@/store/slices/uiSlice';
-import { setTheme } from '@/store/slices/themeSlice';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { useAppSelector, useAppDispatch } from "@/store/hooks";
+import { logout } from "@/store/slices/authSlice";
+import { toggleSidebar } from "@/store/slices/uiSlice";
+import { setTheme } from "@/store/slices/themeSlice";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,7 +30,7 @@ import {
   DropdownMenuSubContent,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu";
 
 export function Navbar() {
   const dispatch = useAppDispatch();
@@ -43,13 +43,13 @@ export function Navbar() {
 
   const handleLogout = async () => {
     await dispatch(logout());
-    navigate('/login');
+    navigate("/login");
   };
 
   const getInitials = () => {
-    if (!user) return 'U';
-    const first = user.first_name?.[0] || '';
-    const last = user.last_name?.[0] || '';
+    if (!user) return "U";
+    const first = user.first_name?.[0] || "";
+    const last = user.last_name?.[0] || "";
     return (first + last).toUpperCase() || user.email[0].toUpperCase();
   };
 
@@ -71,7 +71,9 @@ export function Navbar() {
             <div className="p-1.5 bg-primary rounded-lg">
               <MapPin className="h-5 w-5 text-primary-foreground" />
             </div>
-            <span className="font-bold text-lg hidden sm:inline">GeoMonitor</span>
+            <span className="font-bold text-lg hidden sm:inline">
+              GeoMonitor
+            </span>
           </Link>
         </div>
 
@@ -82,7 +84,7 @@ export function Navbar() {
             variant="ghost"
             size="icon"
             className="relative"
-            onClick={() => navigate('/alerts')}
+            onClick={() => navigate("/alerts")}
           >
             <Bell className="h-5 w-5" />
             {unacknowledgedAlerts.length > 0 && (
@@ -90,10 +92,14 @@ export function Navbar() {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 className={`absolute -top-1 -right-1 h-5 w-5 rounded-full flex items-center justify-center text-xs font-medium text-white ${
-                  hasNewCriticalAlert ? 'bg-destructive animate-pulse' : 'bg-primary'
+                  hasNewCriticalAlert
+                    ? "bg-destructive animate-pulse"
+                    : "bg-primary"
                 }`}
               >
-                {unacknowledgedAlerts.length > 9 ? '9+' : unacknowledgedAlerts.length}
+                {unacknowledgedAlerts.length > 9
+                  ? "9+"
+                  : unacknowledgedAlerts.length}
               </motion.span>
             )}
           </Button>
@@ -101,7 +107,10 @@ export function Navbar() {
           {/* User Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+              <Button
+                variant="ghost"
+                className="relative h-10 w-10 rounded-full"
+              >
                 <Avatar className="h-9 w-9">
                   {user?.avatar && (
                     <AvatarImage src={user.avatar} alt={user.full_name} />
@@ -116,7 +125,7 @@ export function Navbar() {
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
                   <p className="text-sm font-medium leading-none">
-                    {user?.full_name || 'User'}
+                    {user?.full_name || "User"}
                   </p>
                   <p className="text-xs leading-none text-muted-foreground">
                     {user?.email}
@@ -124,19 +133,19 @@ export function Navbar() {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => navigate('/profile')}>
+              <DropdownMenuItem onClick={() => navigate("/profile")}>
                 <User className="mr-2 h-4 w-4" />
                 Profile
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate('/settings')}>
+              <DropdownMenuItem onClick={() => navigate("/settings")}>
                 <Settings className="mr-2 h-4 w-4" />
                 Settings
               </DropdownMenuItem>
               <DropdownMenuSub>
                 <DropdownMenuSubTrigger>
-                  {mode === 'dark' ? (
+                  {mode === "dark" ? (
                     <Moon className="mr-2 h-4 w-4" />
-                  ) : mode === 'light' ? (
+                  ) : mode === "light" ? (
                     <Sun className="mr-2 h-4 w-4" />
                   ) : (
                     <Monitor className="mr-2 h-4 w-4" />
@@ -147,7 +156,7 @@ export function Navbar() {
                   <DropdownMenuRadioGroup
                     value={mode}
                     onValueChange={(value) =>
-                      dispatch(setTheme(value as 'light' | 'dark' | 'system'))
+                      dispatch(setTheme(value as "light" | "dark" | "system"))
                     }
                   >
                     <DropdownMenuRadioItem value="light">
@@ -166,7 +175,10 @@ export function Navbar() {
                 </DropdownMenuSubContent>
               </DropdownMenuSub>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogout} className="text-destructive">
+              <DropdownMenuItem
+                onClick={handleLogout}
+                className="text-destructive"
+              >
                 <LogOut className="mr-2 h-4 w-4" />
                 Log out
               </DropdownMenuItem>
@@ -177,4 +189,3 @@ export function Navbar() {
     </header>
   );
 }
-

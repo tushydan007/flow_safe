@@ -1,5 +1,9 @@
-import apiClient, { withRetry } from './client';
-import type { SatelliteImage, SatelliteImageListItem, SatelliteImageDropdown } from '@/types';
+import apiClient, { withRetry } from "./client";
+import type {
+  SatelliteImage,
+  SatelliteImageListItem,
+  SatelliteImageDropdown,
+} from "@/types";
 
 interface SatelliteListResponse {
   success: boolean;
@@ -26,17 +30,20 @@ interface BoundsResponse {
 }
 
 export const satelliteApi = {
-  getImages: async (params: {
-    status?: string;
-    isAnalyzed?: boolean;
-    pipeline?: number;
-  } = {}): Promise<{ data: SatelliteImageListItem[] }> => {
+  getImages: async (
+    params: {
+      status?: string;
+      isAnalyzed?: boolean;
+      pipeline?: number;
+    } = {}
+  ): Promise<{ data: SatelliteImageListItem[] }> => {
     const queryParams = new URLSearchParams();
-    if (params.status) queryParams.append('status', params.status);
+    if (params.status) queryParams.append("status", params.status);
     if (params.isAnalyzed !== undefined) {
-      queryParams.append('is_analyzed', String(params.isAnalyzed));
+      queryParams.append("is_analyzed", String(params.isAnalyzed));
     }
-    if (params.pipeline) queryParams.append('pipeline', String(params.pipeline));
+    if (params.pipeline)
+      queryParams.append("pipeline", String(params.pipeline));
 
     const response = await withRetry(() =>
       apiClient.get<SatelliteListResponse>(`/pipeline/images/?${queryParams}`)
@@ -53,16 +60,15 @@ export const satelliteApi = {
 
   getDropdownList: async (): Promise<{ data: SatelliteImageDropdown[] }> => {
     const response = await withRetry(() =>
-      apiClient.get<DropdownResponse>('/pipeline/images/dropdown/')
+      apiClient.get<DropdownResponse>("/pipeline/images/dropdown/")
     );
     return { data: response.data.data };
   },
 
-  getBounds: async (id: number): Promise<BoundsResponse['data']> => {
+  getBounds: async (id: number): Promise<BoundsResponse["data"]> => {
     const response = await withRetry(() =>
       apiClient.get<BoundsResponse>(`/pipeline/images/${id}/bounds/`)
     );
     return response.data.data;
   },
 };
-

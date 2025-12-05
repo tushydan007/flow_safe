@@ -1,5 +1,5 @@
-import { NavLink, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { NavLink, useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
   LayoutDashboard,
   Map,
@@ -8,43 +8,43 @@ import {
   Settings,
   User,
   ChevronRight,
-} from 'lucide-react';
+} from "lucide-react";
 
-import { cn } from '@/lib/utils';
-import { useAppSelector } from '@/store/hooks';
+import { cn } from "@/lib/utils";
+import { useAppSelector } from "@/store/hooks";
 
 const navItems = [
   {
-    title: 'Dashboard',
-    href: '/dashboard',
+    title: "Dashboard",
+    href: "/dashboard",
     icon: LayoutDashboard,
   },
   {
-    title: 'Map View',
-    href: '/map',
+    title: "Map View",
+    href: "/map",
     icon: Map,
   },
   {
-    title: 'Analysis',
-    href: '/analysis',
+    title: "Analysis",
+    href: "/analysis",
     icon: BarChart3,
   },
   {
-    title: 'Alerts',
-    href: '/alerts',
+    title: "Alerts",
+    href: "/alerts",
     icon: Bell,
   },
 ];
 
 const bottomNavItems = [
   {
-    title: 'Profile',
-    href: '/profile',
+    title: "Profile",
+    href: "/profile",
     icon: User,
   },
   {
-    title: 'Settings',
-    href: '/settings',
+    title: "Settings",
+    href: "/settings",
     icon: Settings,
   },
 ];
@@ -71,21 +71,21 @@ export function Sidebar() {
                 key={item.href}
                 to={item.href}
                 className={cn(
-                  'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all hover:bg-accent',
+                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all hover:bg-accent",
                   isActive
-                    ? 'bg-primary text-primary-foreground hover:bg-primary/90'
-                    : 'text-muted-foreground hover:text-foreground'
+                    ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                    : "text-muted-foreground hover:text-foreground"
                 )}
               >
                 <Icon className="h-5 w-5" />
                 <span className="flex-1">{item.title}</span>
-                {item.href === '/alerts' && unacknowledgedAlerts.length > 0 && (
+                {item.href === "/alerts" && unacknowledgedAlerts.length > 0 && (
                   <span
                     className={cn(
-                      'flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-xs font-medium',
+                      "flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-xs font-medium",
                       isActive
-                        ? 'bg-primary-foreground/20 text-primary-foreground'
-                        : 'bg-destructive text-destructive-foreground'
+                        ? "bg-primary-foreground/20 text-primary-foreground"
+                        : "bg-destructive text-destructive-foreground"
                     )}
                   >
                     {unacknowledgedAlerts.length}
@@ -108,10 +108,10 @@ export function Sidebar() {
                 key={item.href}
                 to={item.href}
                 className={cn(
-                  'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all hover:bg-accent',
+                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all hover:bg-accent",
                   isActive
-                    ? 'bg-primary text-primary-foreground hover:bg-primary/90'
-                    : 'text-muted-foreground hover:text-foreground'
+                    ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                    : "text-muted-foreground hover:text-foreground"
                 )}
               >
                 <Icon className="h-5 w-5" />
@@ -125,4 +125,3 @@ export function Sidebar() {
     </motion.aside>
   );
 }
-

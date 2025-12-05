@@ -1,6 +1,15 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { authApi } from '@/services/api/auth';
-import type { LoginCredentials, RegisterData, AuthTokens, User } from '@/types/auth';
+import {
+  createSlice,
+  createAsyncThunk,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
+import { authApi } from "@/services/api/auth";
+import type {
+  LoginCredentials,
+  RegisterData,
+  AuthTokens,
+  User,
+} from "@/types/auth";
 
 interface AuthState {
   user: User | null;
@@ -19,52 +28,54 @@ const initialState: AuthState = {
 };
 
 export const login = createAsyncThunk(
-  'auth/login',
+  "auth/login",
   async (credentials: LoginCredentials, { rejectWithValue }) => {
     try {
       const tokens = await authApi.login(credentials);
       const user = await authApi.getCurrentUser();
       return { tokens, user };
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Login failed';
+      const message = error instanceof Error ? error.message : "Login failed";
       return rejectWithValue(message);
     }
   }
 );
 
 export const register = createAsyncThunk(
-  'auth/register',
+  "auth/register",
   async (data: RegisterData, { rejectWithValue }) => {
     try {
       await authApi.register(data);
       return { success: true };
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Registration failed';
+      const message =
+        error instanceof Error ? error.message : "Registration failed";
       return rejectWithValue(message);
     }
   }
 );
 
 export const refreshToken = createAsyncThunk(
-  'auth/refreshToken',
+  "auth/refreshToken",
   async (_, { getState, rejectWithValue }) => {
     try {
       const state = getState() as { auth: AuthState };
       const refreshTokenValue = state.auth.tokens?.refresh;
       if (!refreshTokenValue) {
-        throw new Error('No refresh token available');
+        throw new Error("No refresh token available");
       }
       const tokens = await authApi.refreshToken(refreshTokenValue);
       return tokens;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Token refresh failed';
+      const message =
+        error instanceof Error ? error.message : "Token refresh failed";
       return rejectWithValue(message);
     }
   }
 );
 
 export const logout = createAsyncThunk(
-  'auth/logout',
+  "auth/logout",
   async (_, { getState }) => {
     try {
       const state = getState() as { auth: AuthState };
@@ -80,20 +91,21 @@ export const logout = createAsyncThunk(
 );
 
 export const fetchCurrentUser = createAsyncThunk(
-  'auth/fetchCurrentUser',
+  "auth/fetchCurrentUser",
   async (_, { rejectWithValue }) => {
     try {
       const user = await authApi.getCurrentUser();
       return user;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to fetch user';
+      const message =
+        error instanceof Error ? error.message : "Failed to fetch user";
       return rejectWithValue(message);
     }
   }
 );
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     clearError: (state) => {
@@ -174,4 +186,3 @@ const authSlice = createSlice({
 
 export const { clearError, setTokens, updateUser } = authSlice.actions;
 export default authSlice.reducer;
-

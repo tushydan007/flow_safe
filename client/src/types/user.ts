@@ -14,7 +14,7 @@ export interface Organization {
 }
 
 export interface UserSettings {
-  theme: 'light' | 'dark' | 'system';
+  theme: "light" | "dark" | "system";
   notifications_enabled: boolean;
   sound_alerts_enabled: boolean;
   email_notifications: boolean;
@@ -36,4 +36,3 @@ export interface UserProfile {
   organization: Organization;
   settings: UserSettings;
 }
-

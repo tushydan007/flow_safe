@@ -1,6 +1,10 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { analysisApi } from '@/services/api/analysis';
-import type { AnalysisResult, AnalysisSummary } from '@/types/analysis';
+import {
+  createSlice,
+  createAsyncThunk,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
+import { analysisApi } from "@/services/api/analysis";
+import type { AnalysisResult, AnalysisSummary } from "@/types/analysis";
 
 interface AnalysisState {
   results: AnalysisResult[];
@@ -23,87 +27,103 @@ const initialState: AnalysisState = {
 };
 
 export const fetchAnalysisResults = createAsyncThunk(
-  'analysis/fetchResults',
-  async (params: { imageId?: number; type?: string } = {}, { rejectWithValue }) => {
+  "analysis/fetchResults",
+  async (
+    params: { imageId?: number; type?: string } = {},
+    { rejectWithValue }
+  ) => {
     try {
       const response = await analysisApi.getResults(params);
       return response.data;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to fetch results';
+      const message =
+        error instanceof Error ? error.message : "Failed to fetch results";
       return rejectWithValue(message);
     }
   }
 );
 
 export const fetchAnalysisResult = createAsyncThunk(
-  'analysis/fetchResult',
+  "analysis/fetchResult",
   async (id: number, { rejectWithValue }) => {
     try {
       const response = await analysisApi.getResult(id);
       return response.data;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to fetch result';
+      const message =
+        error instanceof Error ? error.message : "Failed to fetch result";
       return rejectWithValue(message);
     }
   }
 );
 
 export const fetchResultsByImage = createAsyncThunk(
-  'analysis/fetchResultsByImage',
+  "analysis/fetchResultsByImage",
   async (imageId: number, { rejectWithValue }) => {
     try {
       const response = await analysisApi.getResultsByImage(imageId);
       return response;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to fetch results';
+      const message =
+        error instanceof Error ? error.message : "Failed to fetch results";
       return rejectWithValue(message);
     }
   }
 );
 
 export const fetchAnalysisSummary = createAsyncThunk(
-  'analysis/fetchSummary',
+  "analysis/fetchSummary",
   async (_, { rejectWithValue }) => {
     try {
       const response = await analysisApi.getSummary();
       return response.data;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to fetch summary';
+      const message =
+        error instanceof Error ? error.message : "Failed to fetch summary";
       return rejectWithValue(message);
     }
   }
 );
 
 export const runAnalysis = createAsyncThunk(
-  'analysis/run',
+  "analysis/run",
   async (
     params: { imageId: number; analysisTypes?: string[] },
     { rejectWithValue }
   ) => {
     try {
-      const response = await analysisApi.runAnalysis(params.imageId, params.analysisTypes);
+      const response = await analysisApi.runAnalysis(
+        params.imageId,
+        params.analysisTypes
+      );
       return response;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to run analysis';
+      const message =
+        error instanceof Error ? error.message : "Failed to run analysis";
       return rejectWithValue(message);
     }
   }
 );
 
 const analysisSlice = createSlice({
-  name: 'analysis',
+  name: "analysis",
   initialState,
   reducers: {
     selectResult: (state, action: PayloadAction<AnalysisResult | null>) => {
       state.selectedResult = action.payload;
     },
-    updateAnalysisProgress: (state, action: PayloadAction<{ id: number; progress: number; status: string }>) => {
-      const result = state.results.find(r => r.id === action.payload.id);
+    updateAnalysisProgress: (
+      state,
+      action: PayloadAction<{ id: number; progress: number; status: string }>
+    ) => {
+      const result = state.results.find((r) => r.id === action.payload.id);
       if (result) {
         result.progress = action.payload.progress;
         result.status = action.payload.status;
       }
-      const currentResult = state.currentImageResults.find(r => r.id === action.payload.id);
+      const currentResult = state.currentImageResults.find(
+        (r) => r.id === action.payload.id
+      );
       if (currentResult) {
         currentResult.progress = action.payload.progress;
         currentResult.status = action.payload.status;
@@ -182,6 +202,10 @@ const analysisSlice = createSlice({
   },
 });
 
-export const { selectResult, updateAnalysisProgress, clearAnalysisError, resetAnalysisState } = analysisSlice.actions;
+export const {
+  selectResult,
+  updateAnalysisProgress,
+  clearAnalysisError,
+  resetAnalysisState,
+} = analysisSlice.actions;
 export default analysisSlice.reducer;
-

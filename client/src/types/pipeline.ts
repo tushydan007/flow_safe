@@ -37,7 +37,7 @@ export interface PipelineRouteListItem {
 }
 
 export interface GeoJSONFeature {
-  type: 'Feature';
+  type: "Feature";
   geometry: {
     type: string;
     coordinates: number[] | number[][] | number[][][];
@@ -46,7 +46,6 @@ export interface GeoJSONFeature {
 }
 
 export interface GeoJSONData {
-  type: 'FeatureCollection';
+  type: "FeatureCollection";
   features: GeoJSONFeature[];
 }
-

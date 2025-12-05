@@ -1,6 +1,10 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { pipelineApi } from '@/services/api/pipeline';
-import type { PipelineRoute, GeoJSONData } from '@/types/pipeline';
+import {
+  createSlice,
+  createAsyncThunk,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
+import { pipelineApi } from "@/services/api/pipeline";
+import type { PipelineRoute, GeoJSONData } from "@/types/pipeline";
 
 interface PipelineState {
   routes: PipelineRoute[];
@@ -19,46 +23,49 @@ const initialState: PipelineState = {
 };
 
 export const fetchPipelineRoutes = createAsyncThunk(
-  'pipeline/fetchRoutes',
+  "pipeline/fetchRoutes",
   async (_, { rejectWithValue }) => {
     try {
       const response = await pipelineApi.getRoutes();
       return response.data;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to fetch routes';
+      const message =
+        error instanceof Error ? error.message : "Failed to fetch routes";
       return rejectWithValue(message);
     }
   }
 );
 
 export const fetchPipelineRoute = createAsyncThunk(
-  'pipeline/fetchRoute',
+  "pipeline/fetchRoute",
   async (id: number, { rejectWithValue }) => {
     try {
       const response = await pipelineApi.getRoute(id);
       return response.data;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to fetch route';
+      const message =
+        error instanceof Error ? error.message : "Failed to fetch route";
       return rejectWithValue(message);
     }
   }
 );
 
 export const fetchAllGeoJSON = createAsyncThunk(
-  'pipeline/fetchAllGeoJSON',
+  "pipeline/fetchAllGeoJSON",
   async (_, { rejectWithValue }) => {
     try {
       const response = await pipelineApi.getAllGeoJSON();
       return response.data;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to fetch GeoJSON';
+      const message =
+        error instanceof Error ? error.message : "Failed to fetch GeoJSON";
       return rejectWithValue(message);
     }
   }
 );
 
 const pipelineSlice = createSlice({
-  name: 'pipeline',
+  name: "pipeline",
   initialState,
   reducers: {
     selectRoute: (state, action: PayloadAction<PipelineRoute | null>) => {
@@ -112,6 +119,6 @@ const pipelineSlice = createSlice({
   },
 });
 
-export const { selectRoute, clearPipelineError, resetPipelineState } = pipelineSlice.actions;
+export const { selectRoute, clearPipelineError, resetPipelineState } =
+  pipelineSlice.actions;
 export default pipelineSlice.reducer;
-
