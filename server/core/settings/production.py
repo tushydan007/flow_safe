@@ -3,12 +3,12 @@ Production settings for core project.
 Optimized for AWS ECS deployment.
 """
 
-from .base import *  # noqa: F401, F403
+from .base import * 
 
 DEBUG = False
 
 # Security settings
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(','),
 CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',')
 
 # HTTPS settings

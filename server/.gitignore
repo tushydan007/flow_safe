@@ -1,0 +1,106 @@
+# ============================================
+# Django + AWS Deployment .gitignore
+# ============================================
+
+########## PYTHON / DJANGO ##########
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual envs
+venv/
+.venv/
+env/
+ENV/
+
+# Logs
+*.log
+
+# Django local DB (never commit)
+db.sqlite3
+db.sqlite3-journal
+
+# Static/media (served by S3/CloudFront)
+staticfiles/
+static/
+media/
+
+# If you need the folders but not files:
+# static/*
+# !static/.gitkeep
+# media/*
+# !media/.gitkeep
+
+########## PACKAGING / BUILD ##########
+build/
+dist/
+.eggs/
+*.egg-info/
+pip-wheel-metadata/
+
+########## TEST / COVERAGE ##########
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+nosetests.xml
+coverage.xml
+
+########## EDITOR / SYSTEM ##########
+.vscode/
+.idea/
+*.iml
+.DS_Store
+
+########## ENVIRONMENT VARIABLES ##########
+.env
+.env.*
+*.env
+
+# AWS credentials (critical!)
+.aws/
+**/credentials
+**/config
+
+########## AWS ELASTIC BEANSTALK ##########
+# EB creates these deployment-related dirs/files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
+# EB local container artifacts
+.ebextensions/*.bak
+
+########## AWS LAMBDA (Zappa / Serverless) ##########
+.zappa/
+.zappa_settings.json
+.serverless/
+.serverless_plugins/
+__lambda__/
+
+# Lambda package output
+package.zip
+
+########## DOCKER (Common in AWS ECS/ECR workflows) ##########
+docker-compose.override.yml
+*.pid
+*.tar
+*.tgz
+
+########## CACHE / TEMP ##########
+*.retry
+*.pot
+*.pyc
+
+########## TYPE CHECKERS ##########
+.mypy_cache/
+.pyre/
+.dmypy.json
+
+########## NODE (if project includes frontend) ##########
+node_modules/
+npm-debug.log
+yarn-error.log
