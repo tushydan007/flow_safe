@@ -47,7 +47,7 @@ export function MapPage() {
   const { showLegend, searchQuery } = useAppSelector((state) => state.ui);
 
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
-  const [isSearchingLocation, setIsSearchingLocation] = useState(false);
+  const [, setIsSearchingLocation] = useState(false);
   const [mapCenter, setMapCenter] = useState<[number, number]>([0, 0]);
   const [mapZoom, setMapZoom] = useState(3);
 

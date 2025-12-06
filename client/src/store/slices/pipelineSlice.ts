@@ -4,10 +4,14 @@ import {
   type PayloadAction,
 } from "@reduxjs/toolkit";
 import { pipelineApi } from "@/services/api/pipeline";
-import type { PipelineRoute, GeoJSONData } from "@/types/pipeline";
+import type {
+  PipelineRoute,
+  PipelineRouteListItem,
+  GeoJSONData,
+} from "@/types/pipeline";
 
 interface PipelineState {
-  routes: PipelineRoute[];
+  routes: PipelineRouteListItem[];
   selectedRoute: PipelineRoute | null;
   allGeoJSON: GeoJSONData | null;
   isLoading: boolean;

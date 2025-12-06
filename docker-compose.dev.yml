@@ -1,9 +1,10 @@
 version: "3.8"
 
 services:
+  # PostgreSQL with PostGIS
   db:
     image: postgis/postgis:15-3.3-alpine
-    container_name: geospatial_db_dev
+    container_name: flsf_db_dev
     environment:
       POSTGRES_DB: geospatial_db
       POSTGRES_USER: postgres
@@ -18,9 +19,10 @@ services:
       timeout: 5s
       retries: 5
 
+  # Redis for Celery and Channels
   redis:
     image: redis:7-alpine
-    container_name: geospatial_redis_dev
+    container_name: flsf_redis_dev
     ports:
       - "6379:6379"
     volumes:
@@ -31,11 +33,12 @@ services:
       timeout: 5s
       retries: 5
 
+  # Django Backend
   backend:
     build:
-      context: .
+      context: ./server
       dockerfile: Dockerfile.dev
-    container_name: geospatial_backend_dev
+    container_name: flsf_backend_dev
     environment:
       - DJANGO_SETTINGS_MODULE=core.settings.development
       - DB_NAME=geospatial_db
@@ -49,7 +52,7 @@ services:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
     volumes:
-      - .:/app
+      - ./server:/app
       - media_dev:/app/media
       - static_dev:/app/staticfiles
     ports:
@@ -63,11 +66,29 @@ services:
       sh -c "python manage.py migrate &&
              python manage.py runserver 0.0.0.0:8000"
 
+  # React Frontend
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    container_name: flsf_frontend_dev
+    environment:
+      - VITE_API_URL=http://localhost:8000/api/v1
+      - VITE_WS_URL=ws://localhost:8000/ws
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+  # Celery Worker
   celery:
     build:
-      context: .
+      context: ./server
       dockerfile: Dockerfile.dev
-    container_name: geospatial_celery_dev
+    container_name: flsf_celery_dev
     environment:
       - DJANGO_SETTINGS_MODULE=core.settings.development
       - DB_NAME=geospatial_db
@@ -81,7 +102,7 @@ services:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
     volumes:
-      - .:/app
+      - ./server:/app
       - media_dev:/app/media
     depends_on:
       db:
@@ -90,11 +111,12 @@ services:
         condition: service_healthy
     command: celery -A core worker -l info --concurrency=2
 
+  # Celery Beat Scheduler
   celery-beat:
     build:
-      context: .
+      context: ./server
       dockerfile: Dockerfile.dev
-    container_name: geospatial_celery_beat_dev
+    container_name: flsf_celery_beat_dev
     environment:
       - DJANGO_SETTINGS_MODULE=core.settings.development
       - DB_NAME=geospatial_db
@@ -107,7 +129,7 @@ services:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
     volumes:
-      - .:/app
+      - ./server:/app
     depends_on:
       db:
         condition: service_healthy

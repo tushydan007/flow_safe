@@ -3,6 +3,7 @@ import { addNewAlert } from "@/store/slices/alertSlice";
 import { updateImageStatus } from "@/store/slices/satelliteSlice";
 import { updateAnalysisProgress } from "@/store/slices/analysisSlice";
 import type { Alert } from "@/types/alert";
+import type { AnalysisStatus } from "@/types/analysis";
 
 const WS_URL = import.meta.env.VITE_WS_URL || "ws://localhost:8000";
 
@@ -112,7 +113,7 @@ class WebSocketService {
           updateAnalysisProgress({
             id: message.data.id as number,
             progress: message.data.progress as number,
-            status: message.data.status as string,
+            status: message.data.status as AnalysisStatus,
           })
         );
         break;

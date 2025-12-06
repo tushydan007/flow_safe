@@ -1,11 +1,12 @@
 version: "3.8"
 
 services:
+  # Django Backend with Daphne (ASGI)
   backend:
     build:
-      context: .
+      context: ./server
       dockerfile: Dockerfile.prod
-    container_name: geospatial_backend_prod
+    container_name: flsf_backend_prod
     environment:
       - DJANGO_SETTINGS_MODULE=core.settings.production
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
@@ -51,11 +52,47 @@ services:
         reservations:
           memory: 512M
 
+  # React Frontend with Nginx
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.prod
+      args:
+        - VITE_API_URL=${VITE_API_URL:-/api/v1}
+        - VITE_WS_URL=${VITE_WS_URL:-/ws}
+    container_name: flsf_frontend_prod
+    ports:
+      - "80:80"
+    restart: always
+    depends_on:
+      - backend
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--tries=1",
+          "--spider",
+          "http://localhost/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 64M
+
+  # Celery Worker
   celery:
     build:
-      context: .
+      context: ./server
       dockerfile: Dockerfile.prod
-    container_name: geospatial_celery_prod
+    container_name: flsf_celery_prod
     environment:
       - DJANGO_SETTINGS_MODULE=core.settings.production
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
@@ -85,11 +122,12 @@ services:
         reservations:
           memory: 1G
 
+  # Celery Beat Scheduler
   celery-beat:
     build:
-      context: .
+      context: ./server
       dockerfile: Dockerfile.prod
-    container_name: geospatial_celery_beat_prod
+    container_name: flsf_celery_beat_prod
     environment:
       - DJANGO_SETTINGS_MODULE=core.settings.production
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}

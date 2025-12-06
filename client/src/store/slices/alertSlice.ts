@@ -36,11 +36,11 @@ const initialState: AlertState = {
 export const fetchAlerts = createAsyncThunk(
   "alerts/fetchAlerts",
   async (
-    params: { acknowledged?: boolean; severity?: string } = {},
+    params: { acknowledged?: boolean; severity?: string } | void,
     { rejectWithValue }
   ) => {
     try {
-      const response = await alertApi.getAlerts(params);
+      const response = await alertApi.getAlerts(params || {});
       return response;
     } catch (error) {
       const message =

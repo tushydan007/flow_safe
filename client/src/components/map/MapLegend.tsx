@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import type { AnalysisResult } from "@/types/analysis";
+import type { AnalysisResult, AnalysisType } from "@/types/analysis";
 
 interface MapLegendProps {
   analysisResults: AnalysisResult[];
@@ -80,7 +80,9 @@ export function MapLegend({ analysisResults }: MapLegendProps) {
               <div
                 key={key}
                 className={`flex items-start gap-2 ${
-                  activeTypes.has(key) ? "opacity-100" : "opacity-50"
+                  activeTypes.has(key as AnalysisType)
+                    ? "opacity-100"
+                    : "opacity-50"
                 }`}
               >
                 <span className="text-base">{icon}</span>

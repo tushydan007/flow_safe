@@ -1,8 +1,4 @@
-import {
-  createSlice,
-  createAsyncThunk,
-  type PayloadAction,
-} from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { userApi } from "@/services/api/user";
 import type { Organization, UserSettings } from "@/types/user";
 
@@ -25,7 +21,7 @@ export const fetchOrganization = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await userApi.getOrganization();
-      return response.data;
+      return response.data ?? null;
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Failed to fetch organization";
@@ -39,7 +35,7 @@ export const updateOrganization = createAsyncThunk(
   async (data: Partial<Organization>, { rejectWithValue }) => {
     try {
       const response = await userApi.updateOrganization(data);
-      return response.data;
+      return response.data ?? null;
     } catch (error) {
       const message =
         error instanceof Error
@@ -55,7 +51,7 @@ export const fetchSettings = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await userApi.getSettings();
-      return response.data;
+      return response.data ?? null;
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Failed to fetch settings";
@@ -69,7 +65,7 @@ export const updateSettings = createAsyncThunk(
   async (data: Partial<UserSettings>, { rejectWithValue }) => {
     try {
       const response = await userApi.updateSettings(data);
-      return response.data;
+      return response.data ?? null;
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Failed to update settings";

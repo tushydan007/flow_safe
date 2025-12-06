@@ -72,7 +72,7 @@ export function AnalysisDetailPanel({
                     severityColors[severity as keyof typeof severityColors]
                   )}
                 >
-                  {count}
+                  {count as number}
                 </span>
               </div>
             ))}

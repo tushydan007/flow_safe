@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion } from "framer-motion";
@@ -61,13 +61,12 @@ export function SettingsPage() {
   const dispatch = useAppDispatch();
   const { toast } = useToast();
   const { settings, isLoading } = useAppSelector((state) => state.user);
-  const { mode } = useAppSelector((state) => state.theme);
 
   const {
     register,
     handleSubmit,
     setValue,
-    watch,
+    control,
     formState: { isSubmitting },
   } = useForm<SettingsFormData>({
     resolver: zodResolver(settingsSchema),
@@ -81,6 +80,18 @@ export function SettingsPage() {
       map_default_lng: 0,
     },
   });
+
+  // Use useWatch instead of watch() for React Compiler compatibility
+  const themeValue = useWatch({ control, name: "theme" });
+  const notificationsEnabled = useWatch({
+    control,
+    name: "notifications_enabled",
+  });
+  const soundAlertsEnabled = useWatch({
+    control,
+    name: "sound_alerts_enabled",
+  });
+  const emailNotifications = useWatch({ control, name: "email_notifications" });
 
   useEffect(() => {
     dispatch(fetchSettings());
@@ -160,7 +171,7 @@ export function SettingsPage() {
                   Select your preferred color scheme
                 </p>
               </div>
-              <Select value={watch("theme")} onValueChange={handleThemeChange}>
+              <Select value={themeValue} onValueChange={handleThemeChange}>
                 <SelectTrigger className="w-[150px]">
                   <SelectValue />
                 </SelectTrigger>
@@ -204,7 +215,7 @@ export function SettingsPage() {
                 </p>
               </div>
               <Switch
-                checked={watch("notifications_enabled")}
+                checked={notificationsEnabled}
                 onCheckedChange={(checked) =>
                   setValue("notifications_enabled", checked)
                 }
@@ -221,7 +232,7 @@ export function SettingsPage() {
                 </p>
               </div>
               <Switch
-                checked={watch("sound_alerts_enabled")}
+                checked={soundAlertsEnabled}
                 onCheckedChange={(checked) =>
                   setValue("sound_alerts_enabled", checked)
                 }
@@ -238,7 +249,7 @@ export function SettingsPage() {
                 </p>
               </div>
               <Switch
-                checked={watch("email_notifications")}
+                checked={emailNotifications}
                 onCheckedChange={(checked) =>
                   setValue("email_notifications", checked)
                 }

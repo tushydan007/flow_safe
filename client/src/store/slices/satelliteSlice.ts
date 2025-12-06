@@ -4,10 +4,14 @@ import {
   type PayloadAction,
 } from "@reduxjs/toolkit";
 import { satelliteApi } from "@/services/api/satellite";
-import type { SatelliteImage, SatelliteImageDropdown } from "@/types/satellite";
+import type {
+  SatelliteImage,
+  SatelliteImageListItem,
+  SatelliteImageDropdown,
+} from "@/types/satellite";
 
 interface SatelliteState {
-  images: SatelliteImage[];
+  images: SatelliteImageListItem[];
   selectedImage: SatelliteImage | null;
   dropdownList: SatelliteImageDropdown[];
   isLoading: boolean;
@@ -25,11 +29,11 @@ const initialState: SatelliteState = {
 export const fetchSatelliteImages = createAsyncThunk(
   "satellite/fetchImages",
   async (
-    params: { status?: string; isAnalyzed?: boolean } = {},
+    params: { status?: string; isAnalyzed?: boolean } | void,
     { rejectWithValue }
   ) => {
     try {
-      const response = await satelliteApi.getImages(params);
+      const response = await satelliteApi.getImages(params || {});
       return response.data;
     } catch (error) {
       const message =
@@ -78,7 +82,11 @@ const satelliteSlice = createSlice({
     },
     updateImageStatus: (
       state,
-      action: PayloadAction<{ id: number; status: string; progress?: number }>
+      action: PayloadAction<{
+        id: number;
+        status: string;
+        progress?: number;
+      }>
     ) => {
       const image = state.images.find((img) => img.id === action.payload.id);
       if (image) {

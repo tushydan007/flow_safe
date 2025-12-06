@@ -4,10 +4,15 @@ import {
   type PayloadAction,
 } from "@reduxjs/toolkit";
 import { analysisApi } from "@/services/api/analysis";
-import type { AnalysisResult, AnalysisSummary } from "@/types/analysis";
+import type {
+  AnalysisResult,
+  AnalysisResultListItem,
+  AnalysisSummary,
+  AnalysisStatus,
+} from "@/types/analysis";
 
 interface AnalysisState {
-  results: AnalysisResult[];
+  results: AnalysisResultListItem[];
   selectedResult: AnalysisResult | null;
   summaries: AnalysisSummary[];
   currentImageResults: AnalysisResult[];
@@ -114,7 +119,11 @@ const analysisSlice = createSlice({
     },
     updateAnalysisProgress: (
       state,
-      action: PayloadAction<{ id: number; progress: number; status: string }>
+      action: PayloadAction<{
+        id: number;
+        progress: number;
+        status: AnalysisStatus;
+      }>
     ) => {
       const result = state.results.find((r) => r.id === action.payload.id);
       if (result) {

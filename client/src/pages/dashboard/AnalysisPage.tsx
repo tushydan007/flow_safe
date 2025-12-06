@@ -1,13 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import {
-  BarChart3,
-  AlertTriangle,
-  CheckCircle,
-  Clock,
-  Loader2,
-  ChevronRight,
-} from "lucide-react";
+import { BarChart3, AlertTriangle, CheckCircle, Clock } from "lucide-react";
 
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchDropdownList } from "@/store/slices/satelliteSlice";
@@ -15,7 +8,6 @@ import {
   fetchResultsByImage,
   selectResult,
 } from "@/store/slices/analysisSlice";
-import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -68,6 +60,9 @@ export function AnalysisPage() {
         return <CheckCircle className="h-4 w-4 text-emerald-500" />;
     }
   };
+
+  // Export for potential external use
+  void getSeverityIcon;
 
   return (
     <div className="flex h-full">

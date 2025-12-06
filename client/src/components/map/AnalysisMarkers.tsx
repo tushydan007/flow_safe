@@ -1,24 +1,23 @@
-import { Marker, Popup, CircleMarker } from 'react-leaflet';
-import L from 'leaflet';
-import type { AnalysisResult } from '@/types/analysis';
+import { Popup, CircleMarker } from "react-leaflet";
+import type { AnalysisResult } from "@/types/analysis";
 
 interface AnalysisMarkersProps {
   results: AnalysisResult[];
 }
 
 const severityColors = {
-  critical: '#ef4444',
-  high: '#f97316',
-  medium: '#eab308',
-  low: '#22c55e',
+  critical: "#ef4444",
+  high: "#f97316",
+  medium: "#eab308",
+  low: "#22c55e",
 };
 
 const analysisTypeIcons = {
-  ndvi: '🛢️',
-  change: '📊',
-  encroachment: '🚧',
-  emission: '💨',
-  facility: '🏭',
+  ndvi: "🛢️",
+  change: "📊",
+  encroachment: "🚧",
+  emission: "💨",
+  facility: "🏭",
 };
 
 export function AnalysisMarkers({ results }: AnalysisMarkersProps) {
@@ -31,11 +30,12 @@ export function AnalysisMarkers({ results }: AnalysisMarkersProps) {
 
         return result.result_geojson.features.map((feature, index) => {
           const { geometry, properties } = feature;
-          
-          if (geometry.type !== 'Point') return null;
+
+          if (geometry.type !== "Point") return null;
 
           const [lng, lat] = geometry.coordinates as [number, number];
-          const severity = (properties?.severity as keyof typeof severityColors) || 'low';
+          const severity =
+            (properties?.severity as keyof typeof severityColors) || "low";
           const color = severityColors[severity];
 
           return (
@@ -52,11 +52,17 @@ export function AnalysisMarkers({ results }: AnalysisMarkersProps) {
                 <div className="p-2 min-w-[200px]">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-lg">
-                      {analysisTypeIcons[result.analysis_type as keyof typeof analysisTypeIcons]}
+                      {
+                        analysisTypeIcons[
+                          result.analysis_type as keyof typeof analysisTypeIcons
+                        ]
+                      }
                     </span>
-                    <h3 className="font-semibold">{result.analysis_type_display}</h3>
+                    <h3 className="font-semibold">
+                      {result.analysis_type_display}
+                    </h3>
                   </div>
-                  
+
                   <div className="space-y-1 text-sm">
                     <div className="flex items-center gap-2">
                       <span
@@ -65,38 +71,41 @@ export function AnalysisMarkers({ results }: AnalysisMarkersProps) {
                       />
                       <span className="capitalize">{severity} Severity</span>
                     </div>
-                    
-                    {properties?.confidence && (
+
+                    {typeof properties?.confidence === "number" && (
                       <p>
-                        <strong>Confidence:</strong> {(properties.confidence * 100).toFixed(1)}%
+                        <strong>Confidence:</strong>{" "}
+                        {(properties.confidence * 100).toFixed(1)}%
                       </p>
                     )}
-                    
-                    {properties?.ndvi_value !== undefined && (
+
+                    {typeof properties?.ndvi_value === "number" && (
                       <p>
-                        <strong>NDVI:</strong> {properties.ndvi_value.toFixed(3)}
+                        <strong>NDVI:</strong>{" "}
+                        {properties.ndvi_value.toFixed(3)}
                       </p>
                     )}
-                    
-                    {properties?.object_label && (
+
+                    {typeof properties?.object_label === "string" && (
                       <p>
                         <strong>Detected:</strong> {properties.object_label}
                       </p>
                     )}
-                    
-                    {properties?.distance_to_pipeline_m && (
+
+                    {typeof properties?.distance_to_pipeline_m === "number" && (
                       <p>
-                        <strong>Distance:</strong> {properties.distance_to_pipeline_m.toFixed(1)}m
+                        <strong>Distance:</strong>{" "}
+                        {properties.distance_to_pipeline_m.toFixed(1)}m
                       </p>
                     )}
-                    
-                    {properties?.emission_type && (
+
+                    {typeof properties?.emission_type === "string" && (
                       <p>
                         <strong>Type:</strong> {properties.emission_type}
                       </p>
                     )}
-                    
-                    {properties?.condition && (
+
+                    {typeof properties?.condition === "string" && (
                       <p>
                         <strong>Condition:</strong> {properties.condition}
                       </p>
@@ -111,4 +120,3 @@ export function AnalysisMarkers({ results }: AnalysisMarkersProps) {
     </>
   );
 }
-
