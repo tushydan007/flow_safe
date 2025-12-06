@@ -34,11 +34,7 @@ export function DashboardLayout() {
         </AnimatePresence>
 
         {/* Main Content */}
-        <main
-          className={`flex-1 transition-all duration-200 ${
-            sidebarCollapsed ? "lg:ml-0" : "lg:ml-0"
-          }`}
-        >
+        <main className="flex-1 transition-all duration-200">
           <div className="h-[calc(100vh-4rem)] overflow-auto">
             <Outlet />
           </div>

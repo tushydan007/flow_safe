@@ -39,6 +39,22 @@ function MapController({
   const prevCenterRef = useRef(center);
   const prevZoomRef = useRef(zoom);
 
+  // Handle container resize (e.g., when sidebar is toggled)
+  useEffect(() => {
+    const container = map.getContainer();
+
+    const resizeObserver = new ResizeObserver(() => {
+      // Invalidate map size so Leaflet recalculates dimensions
+      map.invalidateSize();
+    });
+
+    resizeObserver.observe(container);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [map]);
+
   useEffect(() => {
     // Only update map if center/zoom actually changed from props
     const centerChanged =
