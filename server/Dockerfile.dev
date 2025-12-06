@@ -23,11 +23,24 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
+# Find GDAL/GEOS library paths and create symlinks in standard location
+RUN GDAL_LIB=$(find /usr/lib -name "libgdal.so*" -type f 2>/dev/null | head -1) && \
+    GEOS_LIB=$(find /usr/lib -name "libgeos_c.so*" -type f 2>/dev/null | head -1) && \
+    if [ -z "$GDAL_LIB" ]; then echo "ERROR: GDAL library not found"; exit 1; fi && \
+    if [ -z "$GEOS_LIB" ]; then echo "ERROR: GEOS library not found"; exit 1; fi && \
+    GDAL_DIR=/usr/lib/x86_64-linux-gnu && \
+    GEOS_DIR=/usr/lib/x86_64-linux-gnu && \
+    if [ ! -f "$GDAL_DIR/libgdal.so" ]; then ln -sf "$GDAL_LIB" "$GDAL_DIR/libgdal.so"; fi && \
+    if [ ! -f "$GEOS_DIR/libgeos_c.so" ]; then ln -sf "$GEOS_LIB" "$GEOS_DIR/libgeos_c.so"; fi && \
+    echo "GDAL library: $GDAL_DIR/libgdal.so -> $GDAL_LIB" && \
+    echo "GEOS library: $GEOS_DIR/libgeos_c.so -> $GEOS_LIB"
+
 # Set GDAL environment variables
 ENV CPLUS_INCLUDE_PATH=/usr/include/gdal
 ENV C_INCLUDE_PATH=/usr/include/gdal
-ENV GDAL_LIBRARY_PATH=/usr/lib/libgdal.so
-ENV GEOS_LIBRARY_PATH=/usr/lib/libgeos_c.so
+# Use standard paths (symlinks created above)
+ENV GDAL_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/libgdal.so
+ENV GEOS_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/libgeos_c.so
 
 # Install pip and pipenv
 RUN pip install --upgrade pip pipenv
