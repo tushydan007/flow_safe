@@ -176,7 +176,7 @@ export function ProfilePage() {
     return (first + last).toUpperCase() || user.email[0].toUpperCase();
   };
 
-  if ((userLoading || orgLoading) && !user) {
+  if (userLoading || orgLoading || !user) {
     return (
       <div className="p-6 max-w-2xl mx-auto">
         <ProfileSkeleton />

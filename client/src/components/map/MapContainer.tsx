@@ -35,19 +35,54 @@ function MapController({
   onCenterChange: (center: [number, number]) => void;
 }) {
   const map = useMap();
+  const isProgrammaticChangeRef = useRef(false);
+  const prevCenterRef = useRef(center);
+  const prevZoomRef = useRef(zoom);
 
   useEffect(() => {
-    map.setView(center, zoom);
+    // Only update map if center/zoom actually changed from props
+    const centerChanged =
+      prevCenterRef.current[0] !== center[0] ||
+      prevCenterRef.current[1] !== center[1];
+    const zoomChanged = prevZoomRef.current !== zoom;
+
+    if (centerChanged || zoomChanged) {
+      isProgrammaticChangeRef.current = true;
+      map.setView(center, zoom);
+      prevCenterRef.current = center;
+      prevZoomRef.current = zoom;
+      // Reset flag after a short delay to allow event to complete
+      setTimeout(() => {
+        isProgrammaticChangeRef.current = false;
+      }, 100);
+    }
   }, [map, center, zoom]);
 
   useEffect(() => {
     const handleZoomEnd = () => {
-      onZoomChange(map.getZoom());
+      // Skip if this was triggered by programmatic change
+      if (isProgrammaticChangeRef.current) return;
+
+      const newZoom = map.getZoom();
+      if (newZoom !== prevZoomRef.current) {
+        prevZoomRef.current = newZoom;
+        onZoomChange(newZoom);
+      }
     };
 
     const handleMoveEnd = () => {
+      // Skip if this was triggered by programmatic change
+      if (isProgrammaticChangeRef.current) return;
+
       const mapCenter = map.getCenter();
-      onCenterChange([mapCenter.lat, mapCenter.lng]);
+      const newCenter: [number, number] = [mapCenter.lat, mapCenter.lng];
+      if (
+        newCenter[0] !== prevCenterRef.current[0] ||
+        newCenter[1] !== prevCenterRef.current[1]
+      ) {
+        prevCenterRef.current = newCenter;
+        onCenterChange(newCenter);
+      }
     };
 
     map.on("zoomend", handleZoomEnd);
