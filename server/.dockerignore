@@ -86,9 +86,6 @@ Dockerfile*
 docker-compose*.yml
 .dockerignore
 
-# Pipenv
-Pipfile.lock
-
 # Poetry
 poetry.lock
 
