@@ -44,10 +44,20 @@ export const authApi = {
   },
 
   getCurrentUser: async (): Promise<User> => {
-    const response = await withRetry(() =>
-      apiClient.get<ApiResponse<User>>("/auth/users/me/")
-    );
-    return response.data.data as User;
+    try {
+      const response = await withRetry(() =>
+        apiClient.get<ApiResponse<User>>("/auth/users/me/")
+      );
+      // Handle different response structures
+      const userData = response.data.data ?? response.data;
+      if (!userData) {
+        throw new Error("User data not found in response");
+      }
+      return userData as User;
+    } catch (error) {
+      console.error("getCurrentUser error:", error);
+      throw error;
+    }
   },
 
   updateProfile: async (data: Partial<User>): Promise<User> => {

@@ -1,4 +1,4 @@
-# GeoMonitor - Geospatial Pipeline Monitoring System
+# PF-Flowsafe - Geospatial Pipeline Monitoring System
 
 A comprehensive full-stack geospatial application for pipeline monitoring with satellite imagery analysis.
 

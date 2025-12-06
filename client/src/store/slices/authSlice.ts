@@ -29,10 +29,19 @@ const initialState: AuthState = {
 
 export const login = createAsyncThunk(
   "auth/login",
-  async (credentials: LoginCredentials, { rejectWithValue }) => {
+  async (credentials: LoginCredentials, { rejectWithValue, dispatch }) => {
     try {
       const tokens = await authApi.login(credentials);
+      if (!tokens || !tokens.access) {
+        throw new Error("Invalid token response");
+      }
+      // Set tokens in store first so API client can use them
+      dispatch(setTokens(tokens));
+      // Now fetch user with the token
       const user = await authApi.getCurrentUser();
+      if (!user) {
+        throw new Error("Failed to fetch user data");
+      }
       return { tokens, user };
     } catch (error) {
       const message = error instanceof Error ? error.message : "Login failed";
@@ -130,9 +139,11 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
+        // Tokens are already set by setTokens action, but ensure they're here too
         state.tokens = action.payload.tokens;
         state.user = action.payload.user;
         state.isAuthenticated = true;
+        state.error = null;
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;

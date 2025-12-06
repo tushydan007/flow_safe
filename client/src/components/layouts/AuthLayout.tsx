@@ -101,7 +101,7 @@ export function AuthLayout() {
 
         {/* Footer */}
         <div className="relative z-10 text-sm text-slate-400">
-          © 2024 GeoMonitor. Advanced Geospatial Analytics.
+          © 2024 PF-Flowsafe. Advanced Geospatial Analytics.
         </div>
       </motion.div>
 

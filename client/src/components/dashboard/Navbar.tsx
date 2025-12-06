@@ -72,7 +72,7 @@ export function Navbar() {
               <MapPin className="h-5 w-5 text-primary-foreground" />
             </div>
             <span className="font-bold text-lg hidden sm:inline">
-              GeoMonitor
+              PF-Flowsafe
             </span>
           </Link>
         </div>

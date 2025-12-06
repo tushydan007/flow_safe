@@ -47,6 +47,9 @@ export function LoginPage() {
     const result = await dispatch(login(data));
     if (login.fulfilled.match(result)) {
       navigate(from, { replace: true });
+    } else if (login.rejected.match(result)) {
+      // Error is already set in state, but log for debugging
+      console.error("Login failed:", result.error);
     }
   };
 
@@ -62,7 +65,7 @@ export function LoginPage() {
         <div className="p-2 bg-primary rounded-xl">
           <MapPin className="w-6 h-6 text-primary-foreground" />
         </div>
-        <span className="text-xl font-bold">GeoMonitor</span>
+        <span className="text-xl font-bold">PF-Flowsafe</span>
       </div>
 
       {/* Header */}
