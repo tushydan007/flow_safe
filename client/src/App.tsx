@@ -30,16 +30,17 @@ import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 
 function App() {
   const dispatch = useAppDispatch();
-  const { isAuthenticated, tokens, isLoading } = useAppSelector(
+  const { isAuthenticated, tokens, isLoading, user } = useAppSelector(
     (state) => state.auth
   );
 
   useEffect(() => {
-    // Verify token and fetch user on app load
-    if (tokens?.access && !isLoading) {
+    // Only fetch user on app load if we have tokens but no user data
+    // (e.g., page refresh scenario). Skip if user already exists (fresh login)
+    if (tokens?.access && !user && !isLoading) {
       dispatch(fetchCurrentUser());
     }
-  }, [dispatch, tokens?.access, isLoading]);
+  }, [dispatch, tokens?.access, user, isLoading]);
 
   if (isLoading && tokens?.access) {
     return <LoadingScreen />;
